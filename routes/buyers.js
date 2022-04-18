@@ -164,6 +164,74 @@ router.get("/buyers/logout", function(req, res){
     res.redirect("/buyers/login");
 });
 
+//9 Get buyer doc JSON for editing
+router.get("/buyers/json/:id", function(req, res){
+    if(req.xhr){
+        //Get the buyer document 
+        User.findById(req.user._id, function (err, docs) {
+            var buyer = docs;
+        res.json({buyer:buyer});
+            });
+        } 
+        else {        
+            res.render("buyer/show");
+    };        
+});
+
+
+//10 Update (RESTful) update buyer info form
+router.put("/buyers/:id", urlencodedParser,  [
+    check('street_address_line1', 'You must enter a street address')
+        .exists()
+        .isLength({ min: 3 }),
+    check('city', 'You must enter a city')
+        .exists()
+        .isLength({ min: 2 }), 
+    check('state', 'You must enter a state')
+        .exists()
+        .isLength({ min: 2 }),
+    check('zip')
+        .exists()
+        .isLength({ min: 5 })
+        .withMessage('Zip Code is not valid')
+        .trim()
+        .escape(),
+    check('phone')
+        .exists()
+        .isLength({ min: 12 })
+        .withMessage('Enter a valid phone number')
+        .trim()
+        .escape(),
+    check('credit_score')
+        .exists()
+        .isLength({ min: 3 })
+        .withMessage('Enter a valid credit score')
+        .trim()
+        .escape(),         
+
+],middleware.checkUserAccountOwnership, function(req, res){
+    const errors = validationResult(req)
+    var errorsArray = errors.errors;
+    if(errorsArray.length > 0) {
+        res.json({json:errorsArray});
+    } if(errorsArray.length === 0) {
+        var editedInfo = {
+            street_address_line1: req.body.street_address_line1,
+            street_address_line2: req.body.street_address_line2,
+            city:req.body.city,
+            state:req.body.state,
+            zip: req.body.zip, 
+            phone:req.body.phone, 
+            credit_score:req.body.credit_score};
+            //Use passport method findByIdAndUpdate() to update the buyer mongoose document.
+            Buyer.findByIdAndUpdate(req.user._id, { $set: editedInfo}, function(err, updatedBuyer){
+                if(err){
+                    return res.redirect("/buyers/dashboard");
+                }     
+                res.json({json:editedInfo});        
+        });
+    }
+});
 
 
 

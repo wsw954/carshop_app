@@ -1,5 +1,4 @@
 $(document).ready(function() {
-    console.log("test line in buyersNew.js")
     //Handle New Buyer form submission
     $("#register_form").on("submit", function (e) {
         e.preventDefault();
