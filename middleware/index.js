@@ -53,3 +53,29 @@ middlewareObj.isUserLoggedIn = function(req, res, next){
         res.redirect("/");
     }
 };
+
+
+//Check user account Ownership
+middlewareObj.checkUserAccountOwnership = function(req, res, next){
+    if(req.isAuthenticated()){
+        User.findById(req.user._id, function(err, foundUser){
+            if(err || !foundUser){
+                req.flash("error", "User not found");
+                    res.redirect("back");
+            } else{
+                if(foundUser._id.equals(req.user._id)){
+                    next(); 
+                } else {
+                    //If not owner, flash message and redirect
+                    req.flash("error", "You don't have permission to EDIT or DELETE this user account");
+                    res.redirect("back");
+
+                }
+            }
+        })
+    }
+};
+
+
+
+module.exports = middlewareObj;
