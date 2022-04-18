@@ -10,8 +10,12 @@ var express = require('express'),
 
 
 //Require routes
-var indexRoutes = require("./routes/index");
-
+var buyerRoutes = require("./routes/buyers"),
+    // dealerRoutes = require("./routes/dealers"),
+    indexRoutes = require("./routes/index");
+    // offerRoutes = require("./routes/offers"),
+    // requestRoutes = require("./routes/requests"),
+    // vehicleRoutes = require("./routes/vehicles");
 
 //Connect to local MongoDB Server locally (Or create if it doesn't exist)
 mongoose.connect("mongodb://localhost:27017/csdb1"); 
@@ -55,7 +59,7 @@ app.use(require("express-session")({
   });
 
   //Apply the routes to the app, should be the last call
-// app.use("/", buyerRoutes);
+app.use("/", buyerRoutes);
 // app.use("/", dealerRoutes);
 app.use("/", indexRoutes);
 // app.use("/", offerRoutes);
