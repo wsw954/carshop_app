@@ -1,10 +1,12 @@
 $(document).ready(function() {
-    //Handle New Buyer form submission
-    $("#register_form").on("submit", function (e) {
+    
+    //Handle Change Password submission
+    $("#password_form").on("submit", function (e) {
+        console.log("Line 5 in buyerShow.js")
         e.preventDefault();
         $.ajax({
-            url: '/buyers/new',
-            type: 'POST',
+            url: '/password/change',
+            type: 'PUT',
             cache: false,
             data:  $(this).serialize() ,
             success: function (data) {
@@ -21,7 +23,7 @@ $(document).ready(function() {
                 }
             }, 
             error: function (jqXHR, textStatus, err) {
-                alert('text status ' + textStatus + ', err ' + err)
+                alert('text status ' + textStatus + ', Error:' + err)
             }
         });
     });
@@ -30,12 +32,13 @@ $(document).ready(function() {
     function createErrorModal(errors){
         $('div[class=modal-body]').empty();
         $.each(errors, function(index, value){
-            //Customize modal to review errors in new buyer form
+            //Customize modal to review errors in change password form
             $('div[class="modal-body"]').append($('<p>', {'text':value.msg}));
-            $("#errorModal").modal('show');
+            $("#errorModal").modal('show')
         }) 
     };
 
+  
 
 
 

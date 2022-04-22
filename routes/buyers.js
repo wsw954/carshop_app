@@ -10,19 +10,19 @@ const { check, validationResult } = require('express-validator');
 
 
 
-//1 Login Form
+//Login Form
 router.get("/buyers/login", function(req, res){
     res.render("buyers/login"); 
 });
 
-//2 New Buyer (RESTFul) render new buyer form
+//New Buyer (RESTFul) render new buyer form
 router.get("/buyers/new", function(req, res){
     res.render("buyers/new"); 
 
 });
 
 
-//3 Create Buyer (RESTful) route, (uses express-validator to validate new Buyer info)
+//Create Buyer (RESTful) route, (uses express-validator to validate new Buyer info)
 router.post("/buyers/new", urlencodedParser,  [
     check('first_name', 'You must enter a first name')
         .exists()
@@ -124,7 +124,7 @@ router.post("/buyers/new", urlencodedParser,  [
 
 });
 
-//4 Handle the Login logic. (Is called when the login form is submitted)
+//Handle the Login logic. (Is called when the login form is submitted)
 router.post("/buyers/login", function (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
                 if (err) { return next(err); }
@@ -142,29 +142,23 @@ router.post("/buyers/login", function (req, res, next) {
 }); 
 
 
-//5 Buyer Dashboard-shown after the buyer successfully signs in
+//Buyer Dashboard-shown after the buyer successfully signs in
 router.get("/buyers/dashboard", middleware.isBuyerLoggedIn, function(req, res){
     res.render("buyers/dashboard");
 }); 
 
-//7 Show (RESTful) buyer info
+//Show (RESTful) buyer info
 router.get("/buyers/:id", middleware.checkUserAccountOwnership, function(req, res){
     res.render("buyers/show");
-
 });
 
-//8 Edit (RESTful) show buyer edit form
+//Edit (RESTful) show buyer edit form
 router.get("/buyers/:id/edit", middleware.checkUserAccountOwnership, function(req, res){
     res.render("buyers/edit");
 });
 
-//6 Logout Route
-router.get("/buyers/logout", function(req, res){
-    req.logout();
-    res.redirect("/buyers/login");
-});
 
-//9 Get buyer doc JSON for editing
+//Get buyer doc JSON for editing
 router.get("/buyers/json/:id", function(req, res){
     if(req.xhr){
         //Get the buyer document 
@@ -179,7 +173,7 @@ router.get("/buyers/json/:id", function(req, res){
 });
 
 
-//10 Update (RESTful) update buyer info form
+//Update (RESTful) update buyer info form
 router.put("/buyers/:id", urlencodedParser,  [
     check('street_address_line1', 'You must enter a street address')
         .exists()

@@ -44,11 +44,14 @@
  <form class="well form-horizontal" action="/password/change?_method=PUT" method="post"  id="password_form">
 
         <!-- Password Change  input-->
-        <div class="form-group" >
-            <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                Change Password
-              </a>
-              <div class="collapse" id="collapseExample">
+        <div class="form-group " >
+            <div class="container" id="change-div">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    Change Password
+                </button>
+            </div>
+
+              <div class="collapse" id="collapseExample" data-parent="#change-div">
                   <div class="card card-body">
                     <!-- New Password-->
                       <div class="form-group">
@@ -100,7 +103,7 @@
             <p id="errorMessage"></p>
             </div>
             <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" id="close-btn" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
         </div>
@@ -110,5 +113,5 @@
 
 </div>
 
-
+<script type="text/javascript"  src="/buyerScripts/buyerShow.js"></script>
 

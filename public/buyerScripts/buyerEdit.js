@@ -68,10 +68,6 @@ $(document).ready(function() {
     };
 
 
-    //Add logic to modal Close btn
-    $('#close-btn').on('click', function(){
-        $("#errorModal").modal('hide');
-        });
 
 
 
