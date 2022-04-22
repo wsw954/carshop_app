@@ -10,6 +10,40 @@ router.get("/vehicles/new", middleware.isUserLoggedIn, function(req, res){
     res.render("vehicles/new");               
 });
 
+
+//Create (RESTful) route, uses POST request that saves the vehicle built (RESTful route CREATE)
+router.post("/vehicles", middleware.isUserLoggedIn, function(req, res){ 
+    User.findById(req.user._id, function(err, user){
+    if(err){
+        console.log(err);
+        res.redirect("/buyers/landings");
+    } else{
+        //Get the vehicle JSON
+        var vehicleJSON = JSON.parse(req.body.json);
+        //Add the creator ID
+        vehicleJSON.creatorID = req.user._id;
+        //Add the creator type
+        vehicleJSON.creatorType = req.user.kind;
+        //Store the vehicle to database
+        Vehicle.create(vehicleJSON, function(err, vehicle){
+            if(err){
+                console.log(err);
+            } else{
+                res.redirect("/vehicles/index");   
+                    }
+                });       
+            }
+        });     
+    });
+
+
+//Route used in the user dashboard to render vehicles index form view
+router.get("/vehicles/index", middleware.isUserLoggedIn, function(req, res){
+    res.render("vehicles/index");
+});
+
+
+
 //GET request to populate Make dropdown menu (Called  in vehicleNew.js script file)
 router.get("/src/assets/make", middleware.isUserLoggedIn, function(req, res){
     var data = require("../src/assets/make");

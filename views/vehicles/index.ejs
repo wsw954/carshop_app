@@ -1,0 +1,83 @@
+<%- include('../partials/header') %>
+
+  <div class="container">
+      <h1>Vehicle Index Page</h1>
+
+      <h4 id="userType"><%=currentUser.kind%></h4>
+
+      <h4 id="userID"><%=currentUser._id%></h4>
+
+
+      <br>
+      <div class="container">
+      <table  class="table table-hover table-bordered "  style="width:100%">
+        </table>
+      </div>
+
+
+      <div id="delete-div" class="container hidden">
+        <form method="POST" id="delete-vehicle-form" >               
+          </form>
+      </div>
+
+
+
+
+      <!--Delete Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Warning!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>Are you sure you want to DELETE this vehicle?</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+                <button type="button" class="btn btn-primary" id="confirm-delete-btn">YES</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+           <!-- Error Modal -->
+           <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Error</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p id="errorMessage"></p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>   
+                </div>
+              </div>
+            </div>
+          </div>   
+
+
+
+
+
+
+
+
+
+
+
+    
+  
+  </div>
+
+
+  <!-- <script type="text/javascript"  src="/vehicleIndex.js"></script> -->
+
