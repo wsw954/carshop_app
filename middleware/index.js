@@ -76,6 +76,15 @@ middlewareObj.checkUserAccountOwnership = function(req, res, next){
     }
 };
 
+//Get the url for JSON files of models for make selected
+middlewareObj.modelListJSON = function(make) {  
+    return ("../src/assets/"+make+"/"+make+"Models.json")
+};
+
+//Get the data JSON file for make & model selected
+middlewareObj.modelDataJSON = function(make, model){
+    return ("../src/assets/"+make+"/"+model+"2022.json")
+};
 
 
 module.exports = middlewareObj;

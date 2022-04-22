@@ -1,0 +1,336 @@
+{"data":
+      
+    { "year":"2022",
+      
+      "trim":{"label":"Trim",
+             "type":"Single",
+             "choices":[{"name":"Sedan LX","price":22350,"serial":"tt1"},
+                        {"name":"Sedan Sport","price":23750,"serial":"tt2"},
+                        {"name":"Sedan EX","price":25350,"serial":"tt3"},
+                        {"name":"Sedan Touring","price":28950,"serial":"tt4"},
+                        {"name":"Hatchback LX","price":22350,"serial":"tt5"},
+                        {"name":"Hatchback Sport","price":24550,"serial":"tt6"},   
+                        {"name":"Hatchback EX-L","price":27050,"serial":"tt7"},   
+                        {"name":"Hatchback Sport Touring","price":29850,"serial":"tt8"},   
+                        {"name":"Si","price":27300,"serial":"tt9"},   
+                        {"name":"Si HPT","price":27300,"serial":"tt10"}]},
+
+      "options":[
+                 {"label":"Powertrain",
+                  "type":"Single",
+                  "name":"powertrain",  
+                  "choices":[
+                          {"name":"158hp CVT w/2.0L 4-Cyl Engine","price":0,"serial":"pw1",
+                           "precursor":[["tt1", "tt2", "tt5", "tt6"]]},
+                          
+                          {"name":"180hp CVT w/1.5L Turbo 4-Cyl Engine","price":0, "serial":"pw2",
+                           "precursor":[["tt3","tt4", "tt7", "tt8"]]},
+
+                          {"name":"158hp 6MT w/2.0L 4-Cyl Engine","price":0,"serial":"pw3",
+                           "precursor":[["tt6"]]},
+
+                          {"name":"180hp 6MT w/1.5L Turbo 4-Cyl Engine","price":0,"serial":"pw4",
+                           "precursor":[["tt8"]]},
+
+                          {"name":"200hp 6MT w/1.5L Turbo 4-Cyl Engine","price":0,"serial":"pw5",
+                            "precursor":[["tt9", "tt10"]]}
+                                  ]},
+                  
+                 {"label":"Exterior Color",
+                  "type":"Single",
+                  "name":"ext_color",
+                  "choices":[
+                     {"name":"Aegean Blue Metallic","price":0, "serial":"ec1",
+                      "precursor":[["tt1","tt2","tt3","tt4","tt9","tt10"]],
+                      "reset":["int_color"]},
+
+                     {"name":"Crystal Black Pearl","price":0,"serial":"ec2",
+                      "precursor":[["tt1","tt2","tt3","tt4","tt5","tt6","tt7","tt8","tt9","tt10"]],
+                      "reset":["int_color"]
+                    },
+
+                     {"name":"Lunar Silver Metallic","price":0,"serial":"ec3",
+                      "precursor":[["tt1","tt2","tt3","tt4","tt5","tt6","tt7", "tt8"]],
+                      "reset":["int_color"] 
+                    },
+                       
+                     { "name":"Meteorite Gray Metallic","price":0,"serial":"ec4",
+                       "precursor":[["tt1","tt2","tt3","tt4","tt5","tt6","tt7", "tt8"]],
+                       "reset":["int_color"] 
+                      },
+                       
+                     {"name":"Rallye Red","price":0,"serial":"ec5",
+                      "precursor":[["tt1","tt2","tt3","tt4","tt6","tt7", "tt8", "tt9"]],
+                      "reset":["int_color"]
+                    },
+                      
+                     {"name":"Platinum White Pearl","price":395,"serial":"ec6",
+                      "precursor":[["tt1","tt2","tt3","tt4","tt5","tt6","tt7","tt8","tt9","tt10"]],
+                      "reset":["int_color"]
+                      },
+                       
+                     {"name":"Sonic Gray Pearl","price":395,"serial":"ec7",
+                      "precursor":[["tt2","tt4","tt6","tt8","tt9","tt10"]],
+                      "reset":["int_color"]
+                    },
+                       
+                     {"name":"Morning Mist Metallic","price":395,"serial":"ec8",
+                      "precursor":[["tt3","tt4"]],
+                      "reset":["int_color"]
+                    },
+                       
+                     {"name":"Boost Blue Pearl","price":395,"serial":"ec9",
+                      "precursor":[["tt8","tt10"]],
+                      "reset":["int_color"]
+                    },
+                       
+                     {"name":"Smokey Mauve Pearl","price":395,"serial":"ec10",
+                      "precursor":[["tt7", "tt8"]],
+                      "reset":["int_color"] 
+                    },
+                       
+                     {"name":"Blazing Orange Pearl","price":395,"serial":"ec11",
+                      "precursor":[["tt9"]],
+                      "reset":["int_color"]
+                      }
+                     ]},
+
+                  {"label":"Interior Color",
+                   "type":"Single",
+                   "name":"int_color",
+                   "choices":[
+                      {"name":"Black Cloth LX","price":0, "serial":"ic1",
+                        "precursor":[["tt1","tt2","tt3", "tt5", "tt6"]]},
+
+                      {"name":"Black & Red Cloth","price":0, "serial":"ic5",
+                          "precursor":[["tt9", "tt10"]]},
+
+                      {"name":"Gray Cloth LX","price":0,"serial":"ic2",
+                       "precursor":[["tt1","tt3"],
+                                     ["ec4","ec6"]]},
+
+                      {"name":"Black Leather","price":0,"serial":"ic3",
+                       "precursor":[["tt4","tt7","tt8"]]},
+
+                      {"name":"Gray Leather","price":0,"serial":"ic4",
+                       "precursor":[["tt4", "tt7"],
+                                    ["ec4", "ec6"]]}
+                                      ]},
+
+                 {"label":"Wheels",
+                  "type":"Single",
+                  "name":"wheels",                     
+                  "choices":[
+                          {"name":"16-Inch Wheels /Covers","price":0, "serial":"w1",
+                          "precursor":[["tt1", "tt5"]]},
+
+                          {"name":"18-Inch Gloss-Black Alloy Wheels","price":0,"serial":"w2",
+                          "precursor":[["tt2","tt6"]]},
+
+                          {"name":"18-Inch Black Alloy Wheels","price":1706,"serial":"w3",
+                          "precursor":[["tt2", "tt4","tt6", "tt8", "tt9", "tt10"]]},
+
+                          {"name":"17-Inch Alloy Wheels","price":0,"serial":"w4",
+                              "precursor":[["tt3","tt6"]]},
+
+                          {"name":"17-Inch Black Alloy Wheels","price":1706,"serial":"w5",
+                          "precursor":[[ "tt7"]]},
+
+                          {"name":"18-Inch Alloy Wheels","price":0,"serial":"w6",
+                          "precursor":[["tt4", "tt8"]]},
+
+                          {"name":"18-Inch Matte Black Alloy Wheels","price":0,"serial":"w7",
+                          "precursor":[["tt9", "tt10"]]}
+                              ]
+                  },
+
+                 {"label":"Packages",
+                  "type":"Multiple",
+                  "name":"packages",
+                  "choices":[
+                      {"name":"All-Season Protection Package I","price":398,"serial":"pk1",
+                       "precursor":[["tt1","tt2", "tt3","tt4", "tt5","tt8"]],
+                       "unselect":["pk2","pk6"],
+                       "components":["ea22","ia1","ia10"]
+                       
+                      },
+
+                      
+                      {"name":"All-Season Protection Package II","price":351,"serial":"pk2",
+                       "precursor":[["tt2","tt3", "tt4", "tt5", "tt8"]],
+                       "unselect":["pk1","pk6"],
+                       "components":["ea29","ia1","ia10"]
+                       
+                        },
+
+                      {"name":"HPD Package","price":1418,"serial":"pk3",
+                       "precursor":[["tt1", "tt2","tt3", "tt4"]],
+                       "components":["ea3","ea10","ea24", "ea25","ea26","w3"]
+                        },
+
+                      {"name":"HPD Package","price":1112,"serial":"pk4",
+                      "precursor":[["tt9", "tt10"]],
+                      "components":["ea3","ea10","ea24", "ea25","ea26"]
+                      }, 
+                      
+                      {"name":"HPD Package","price":797,"serial":"pk5",
+                        "precursor":[["tt5", "tt8"]],
+                        "components":["ea10", "ea23","ea23"]
+                        },
+
+                      {"name":"Protection Package I","price":285,"serial":"pk6",
+                       "precursor":[["tt2","tt3", "tt4", "tt5", "tt8"]],
+                       "unselect":["pk1","pk2"], 
+                       "components":["ea22","ea29","ia10"]
+                        }
+                      ]
+                  },
+
+
+                  {"label":"External Accessories",
+                   "type":"Multiple",
+                   "name":"ext_acc",
+                    "choices":[
+                               {"name":"Bike Attachment Frame Mount","price":201, "serial":"ea1",
+                                "precursor":[["tt5","tt6", "tt8"]]}, 
+
+                               {"name":"Body Side Molding","price":230, "serial":"ea2",
+                                "precursor":[["tt1","tt2","tt3","tt4","tt6", "tt8"]]},
+
+                               {"name":"Decklid Spoiler-HPD","price":306, "serial":"ea3",
+                                "precursor":[["tt1","tt2","tt3","tt4", "tt5","tt6"]]},
+
+                               {"name":"Door Edge Film","price":51, "serial":"ea4",
+                                "precursor":[["tt1","tt2","tt3","tt4", "tt5","tt6"]] },
+
+                               {"name":"Door Edge Guard","price":118, "serial":"ea5",
+                                "precursor":[["tt1","tt2","tt3","tt4", "tt5","tt6"]]},
+
+                               {"name":"Door Handle Film","price":51, "serial":"ea6",
+                                "precursor":[["tt1","tt2","tt3","tt4","tt5","tt6"]] },
+
+                               {"name":"Door Visors-Chrome","price":220, "serial":"ea7",
+                                "precursor":[["tt1","tt3","tt5","tt4","tt6"]]},
+
+                               {"name":"Door Visors-Black","price":220, "serial":"ea8",
+                                "precursor":[["tt2","tt5","tt6"]]},
+
+                               {"name":"Emblem, Sport-Black","price":38, "serial":"ea9",
+                                  "precursor":[["tt2","tt6"]]}, 
+
+                               {"name":"Emblem-HPD","price":41, "serial":"ea10",
+                                "precursor":[["tt5", "tt6"]]},  
+
+                               {"name":"Emblems-Front & Rear H-Mark & Civic-Gloss Black",
+                                "price":108,
+                                "serial":"ea11",
+                                "precursor":[["tt1","tt2","tt3","tt4","tt5","tt6"]]},
+
+                               {"name":"Kayak Attachment","price":251, "serial":"ea12",
+                                "precursor":[["tt5"]]}, 
+
+                               {"name":"Moonroof Visor","price":159, "serial":"ea13",
+                                "precursor":[["tt3","tt4","tt5","tt6"]]},
+
+                               {"name":"Rear Bumper Applique","price":72, "serial":"ea14",
+                                "precursor":[["tt1","tt2","tt3","tt4","tt5","tt6"]]},
+
+                               {"name":"Rear Bumper Protector","price":90, "serial":"ea15",
+                                "precursor":[["tt5"]]}, 
+
+                               {"name":"Roof Basket","price":404, "serial":"ea16",
+                                "precursor":[["tt5", "tt6"]]},
+                                
+                               {"name":"Roof Box-Midsize","price":404, "serial":"ea17",
+                                "precursor":[["tt5"]]},
+
+                               {"name":"Roof Box-Short","price":523, "serial":"ea18",
+                                "precursor":[["tt5"]]},
+
+                               {"name":"Roof Rack","price":399, "serial":"ea19",
+                                "precursor":[["tt5"]]},
+
+                               {"name":"Ski/Snowboard Attachment","price":267, "serial":"ea20",
+                                "precursor":[["tt5"]]}, 
+
+                               {"name":"Surf/Paddleboard Attachment","price":160, "serial":"ea21",
+                                "precursor":[["tt5"]]},   
+
+                               {"name":"Splash Guard Set","price":108, "serial":"ea22",
+                                 "precursor":[["tt1","tt2","tt3","tt4","tt5"]]},
+
+                               {"name":"Tailgate Spoiler-HPD","price":399, "serial":"ea23",
+                                "precursor":[["tt5"]]},  
+
+                               {"name":"Underbody Spoiler-HPD Front","price":357, "serial":"ea24",
+                                "precursor":[["tt1","tt2","tt3","tt4","tt5"]]},
+
+                               {"name":"Underbody Spoiler-HPD Rear","price":306, "serial":"ea25",
+                                  "precursor":[["tt1","tt2","tt3","tt4","tt5","tt6"]]},
+
+                               {"name":"Underbody Spoiler-HPD Side","price":408, "serial":"ea26",
+                                 "precursor":[["tt1","tt2","tt3","tt4","tt5","tt6"]]},
+
+                               {"name":"Valve Stem Caps","price":22, "serial":"ea27",
+                                  "precursor":[["tt5","tt6"]]},  
+
+                               {"name":"Wheel Locks-Black","price":87, "serial":"ea28",
+                                "precursor":[["tt2","tt3","tt4","tt5","tt6"]],
+                                "unselect":["ea29"]   },
+
+                               {"name":"Wheel Locks-Chrome","price":60, "serial":"ea29",
+                                "precursor":[["tt2","tt3","tt4","tt5","tt6"]],
+                                "unselect":["ea28"]},
+
+                               {"name":"Wheel Lug Nuts-Black","price":48, "serial":"ea30",
+                                "precursor":[["tt2","tt3","tt4","tt5","tt6"]]}   
+                               ]},
+
+                   {"label":"Internal Accessories",
+                    "type":"Multiple",
+                    "name":"int_acc",
+                    "choices":[                                 
+                              {"name":"All Season Floor Mats","price":174, "serial":"ia1",
+                              "precursor":[["tt1","tt3","tt4"]]}, 
+
+                              {"name":"Cargo Net","price":51, "serial":"ia2",
+                                  "precursor":[["tt1","tt3","tt4"]]},
+
+                              {"name":"Cargo Tray","price":115, "serial":"ia3",
+                               "precursor":[["tt2"]]},  
+                               
+                              {"name":"Cargo Tray Dividers","price":62, "serial":"ia4",
+                               "precursor":[["tt5"]]},    
+
+                              {"name":"Contoured High-Wall Carpet Floor Mats","price":184, "serial":"ia5",
+                                  "precursor":[["tt1","tt3","tt4"]]},
+
+                              {"name":"Door Sill Protection Film","price":102, "serial":"ia6",
+                                  "precursor":[["tt1", "tt3","tt4"]] },
+
+                              {"name":"Illuminated Door Sill Trim-Red","price":306, "serial":"ia7",
+                                  "precursor":[["tt1", "tt3","tt4"]]},
+
+                              {"name":"Rear Passenger Window Shades","price":179, "serial":"ia8",
+                                  "precursor":[["tt1","tt3","tt4"]] },
+
+                              {"name":"Seat Back Protectors","price":100, "serial":"ia9",
+                               "precursor":[["tt5"]] },
+
+                              {"name":"Trunk Tray","price":118, "serial":"ia10",
+                                  "precursor":[["tt1", "tt3","tt4"]]},
+
+                              {"name":"Trunk Tray Dividers","price":62, "serial":"ia11",
+                                  "precursor":[["tt1","tt3","tt4","tt6"]]}]},
+
+                      {"label":"Electronic Accessories",
+                       "type":"Multiple",
+                       "name":"elec_acc",
+                       "choices":[                                 
+                                  {"name":"Engine Block Heater","price":86, "serial":"ela1",
+                                  "precursor":[["tt1", "tt2", "tt3","tt4"]]}]}
+              ]
+      }
+
+}
+

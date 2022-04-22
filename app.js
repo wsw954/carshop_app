@@ -12,10 +12,10 @@ var express = require('express'),
 //Require routes
 var buyerRoutes = require("./routes/buyers"),
     // dealerRoutes = require("./routes/dealers"),
-    indexRoutes = require("./routes/index");
+    indexRoutes = require("./routes/index"),
     // offerRoutes = require("./routes/offers"),
     // requestRoutes = require("./routes/requests"),
-    // vehicleRoutes = require("./routes/vehicles");
+    vehicleRoutes = require("./routes/vehicles");
 
 //Connect to local MongoDB Server locally (Or create if it doesn't exist)
 mongoose.connect("mongodb://localhost:27017/csdb1"); 
@@ -64,7 +64,7 @@ app.use("/", buyerRoutes);
 app.use("/", indexRoutes);
 // app.use("/", offerRoutes);
 // app.use("/", requestRoutes);
-// app.use("/", vehicleRoutes);
+app.use("/", vehicleRoutes);
 // app.use("/", hondaRoutes); 
 
 //Set up listen method for local version
