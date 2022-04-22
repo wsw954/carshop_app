@@ -14,7 +14,7 @@ var buyerRoutes = require("./routes/buyers"),
     // dealerRoutes = require("./routes/dealers"),
     indexRoutes = require("./routes/index"),
     // offerRoutes = require("./routes/offers"),
-    // requestRoutes = require("./routes/requests"),
+    requestRoutes = require("./routes/requests"),
     vehicleRoutes = require("./routes/vehicles");
 
 //Connect to local MongoDB Server locally (Or create if it doesn't exist)
@@ -63,9 +63,9 @@ app.use("/", buyerRoutes);
 // app.use("/", dealerRoutes);
 app.use("/", indexRoutes);
 // app.use("/", offerRoutes);
-// app.use("/", requestRoutes);
+app.use("/", requestRoutes);
 app.use("/", vehicleRoutes);
-// app.use("/", hondaRoutes); 
+
 
 //Set up listen method for local version
   app.listen(3000, function(){

@@ -42,6 +42,21 @@ router.get("/vehicles/index", middleware.isUserLoggedIn, function(req, res){
     res.render("vehicles/index");
 });
 
+//GET request to populate table with list of saved vehicles (Called by Ajax getJson  inside the vehicleIndex.js script file)
+router.get("/vehicles/index/json/", middleware.isUserLoggedIn, function(req, res){
+    if(req.xhr){
+        //Get all vehicles saved by user
+        Vehicle.find({ creatorID: req.user._id}, function (err, docs) {
+        var vehicles = docs; 
+        res.json({vehicles:docs});
+        });
+        } 
+        else {        
+            res.render("vehicles/new");
+    };        
+});
+
+
 
 
 //GET request to populate Make dropdown menu (Called  in vehicleNew.js script file)
