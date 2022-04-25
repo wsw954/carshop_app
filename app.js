@@ -11,7 +11,7 @@ var express = require('express'),
 
 //Require routes
 var buyerRoutes = require("./routes/buyers"),
-    // dealerRoutes = require("./routes/dealers"),
+    dealerRoutes = require("./routes/dealers"),
     indexRoutes = require("./routes/index"),
     // offerRoutes = require("./routes/offers"),
     requestRoutes = require("./routes/requests"),
@@ -60,7 +60,7 @@ app.use(require("express-session")({
 
   //Apply the routes to the app, should be the last call
 app.use("/", buyerRoutes);
-// app.use("/", dealerRoutes);
+app.use("/", dealerRoutes);
 app.use("/", indexRoutes);
 // app.use("/", offerRoutes);
 app.use("/", requestRoutes);
