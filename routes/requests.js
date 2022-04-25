@@ -8,6 +8,47 @@ var {Offer}= require("../models/offer");
 var middleware = require("../middleware");
 
 
+//New (RESTful) route to render new Request form
+router.get("/requests/new", middleware.isBuyerLoggedIn, function(req, res){
+    var vehicle_id = req.query.vehicle;
+    res.render("requests/new", {vehicle_id:vehicle_id});
+});
+
+
+//Create (RESTful) route, saves a new request 
+router.post("/requests", middleware.isUserLoggedIn, function(req, res){ 
+    User.findById(req.user._id, function(err, user){
+    if(err){
+        console.log(err);
+        res.redirect("/buyers/landings");
+    } else{
+        //Get the request JSON
+        var requestJSON = JSON.parse(req.body.json);
+        //Make status Active, since this is a new request
+        requestJSON.status = "Active";
+        //Store the vehicle to database
+        Request.create(requestJSON, function(err, request){
+            if(err){
+                console.log(err);
+            } else{
+                res.redirect("/requests");   
+                }
+            });       
+        }
+    });     
+});
+
+//SHOW (RESTful) route to render the request show view
+router.get("/requests/:id", middleware.isUserLoggedIn, function(req, res){
+    var request = req.params.id;
+    res.render("requests/show",{request:request});
+});
+
+
+//Index (RESTful) route that handles click on Requests link in dealerDashboard 
+router.get("/requests", middleware.isUserLoggedIn, function(req, res){
+    res.render("requests/index"); 
+});
 
 
 

@@ -1,0 +1,132 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+    <h2>Request Show </h2>
+    <br>
+    <h2 id="noRequestHeader" class="hidden">You currently have no Active Request </h2>
+
+    <span id="requestID"></span>
+    <input type="text" class="hidden" value="<%=currentUser.kind%>" id="userKind"/>
+    <input type="text" class="hidden" value="<%=currentUser._id%>" id="userID"/>
+    <input type="text" class="hidden" value="<%=request%>" id="requestID"/>
+ 
+
+    <div id="request-div" class="container hidden">
+        <ul class="list-unstyled" >
+            <span>Buyer Info</span>
+            <li>
+                <div class="container border border-primary rounded">
+                    <div id="buyerID" ></div>
+                    </div>
+            </li>
+            <br>
+            <span>Vehicle Basic Info</span>
+            <li>
+                <div class="container border border-primary rounded">
+                    <div id="vehicleMake" ></div>
+                    <div id="vehicleModel" ></div>
+                    <div id="vehicleMSRP" ></div>
+                </div>
+            </li>
+            <button id="vehicle_detail"class="btn btn-primary" data-toggle="collapse"
+            data-target="#vehicle-detail" aria-expanded="false" aria-controls="vehicle-detail">Vehicle Details</button>
+            <div class="collapse border border-primary rounded " id="vehicle-detail">
+                    <div class="card" id="modelDetails">
+                    </div>  
+            </div>
+
+            <br>
+            <span>Payment Terms</span>
+            <li>
+                <div class="container border border-primary rounded">
+                    <div id="purchaseType" ></div>
+                    <div id="downPayment" ></div>
+                    <div id="numberOfMonths" ></div> 
+                    <div id="leaseTerm" ></div>
+                    <div id="annualMileage" ></div>
+                    </div>
+            </li>
+            <br>
+            <span>Offer Status</span>
+            <li>
+                <div class="container border border-primary rounded">
+                    <div id="status" ></div>
+                    <div id="offers" >Number of Offers:</div> 
+                    </div>
+            </li>
+        </ul>
+    </div>
+    <div id="offer-div" class="container hidden">
+      <button id="offer_select"class="btn btn-primary" data-toggle="collapse"
+      data-target="#offer-div" aria-expanded="false" aria-controls="offer-div">All Offers</button>
+      <div class="collapse border border-primary rounded " id="offer-div">
+              <table class="table bootstrap-table bootstrap4" id="offer-table">   
+                  </table>  
+      </div>
+  </div> 
+  <br> 
+  <div id="cancel-div" class="container hidden">
+    <form method="POST" id="cancel-request-form" >               
+      </form>
+  </div>
+  <div id="delete-div" class="container hidden">
+    <form method="POST" id="delete-request-form" >               
+      </form>
+  </div>
+
+  <button id="cancel_request"class="btn btn-xs btn-danger hidden">Cancel Request</button>
+
+    <div id="inv-div" class="container hidden">
+        <button id="inv_select"class="btn btn-primary" data-bs-toggle="collapse"
+        data-target="#dealer-inv" aria-expanded="false" aria-controls="dealer-inv">View Inventory</button>
+        <div class="collapse border border-primary rounded " id="dealer-inv">
+                <table class="table bootstrap-table bootstrap4" id="dealer-inv-table">   
+                    </table>  
+        </div>
+    </div>  
+
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">ERROR</h5>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p id="errorMessage"></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal" id ="cancelModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Confirm</h5>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p id="cancelMessage">Are you sure you want to CANCEL this Request?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" id="confirm-cancel-btn">YES</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">NO</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+<!--Add script file   -->
+<!-- <script type="text/javascript"  src="/requestScripts/requestShow.js"></script>   -->
+
+
+

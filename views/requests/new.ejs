@@ -1,0 +1,115 @@
+<%- include('../partials/header') %>
+<div class="container">
+
+    <h3>NEW  Requests Form</h3>
+    <h4>Buyer Name:  <%= currentUser.username %> </h4>
+    <h4 id="userID" data-userID=<%=currentUser._id%>> User ID:<%=currentUser._id%></h4>
+    <h5 id="vehicleID" data-vehicleID=<%=vehicle_id%>>Vehicle ID:<%=vehicle_id%></h5>
+    <br>
+    <h5 id="active-req-note" class="hidden">Sorry, you can only have One Active Request</h5>
+    <br>
+    <a id="req-anchor-tag" class="hidden" href="/requests/<%= currentUser.id %>" >Click to check on your Active Request</a>
+    <card id="new-request-card" class="hidden">
+        <form action="/request/data" method="POST" id="request_data">
+            <div class="form-group">
+                <label for="buyer_id">Buyer ID:</label>                  
+                <input class="form-control" type ="text" name="buyer_id" readonly="true" value="<%= currentUser._id %>">
+            </div> 
+            <br>
+            <div class="form-group"> 
+                <label for="vehicle_id">Vehicle ID:</label>                      
+                <input class="form-control" type ="text" name="vehicle_id" readonly="true" value="<%= vehicle_id%>">
+            </div>
+            <br>
+            <div class="form-group"> 
+                <label for="vehicle_make">Make:</label>                       
+                <input class="form-control" type ="text" name="vehicle_make" readonly="true" >
+            </div><br>
+            <div class="form-group"> 
+                <label for="vehicle_model">Model:</label>                       
+                <input class="form-control" type ="text" name="vehicle_model" readonly="true"  >
+            </div>
+            <br>
+            <div class="form-group"> 
+                <label for="vehicle_msrp">MSRP:</label>                       
+                <input class="form-control" type ="number" name="vehicle_msrp" readonly="true"  >
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="purchase_type_select">Purchase Type</label> 
+                <br>
+                <select name="purchase_type" id="purchase_type_select">
+                    <option value="">--Select a Purchase Type --</option>
+                    <option value="Cash">Cash Purchase</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Lease">Lease</option>
+                </select>
+            </div>
+            <br>
+            <div class="hidden" id="down_payment"> 
+                <label for="down_payment">Down Payment (default: $1000)</label>                       
+                <input class="form-control" type ="number" name="down_payment" min="0" step="100" max="2500000"  >
+            </div>
+            <br>
+            <div class="hidden" id="number_of_months"> 
+                <label for="number_of_months"></label>                       
+                <input class="form-control" type ="number" name="number_of_months" >
+            </div>
+            <br>
+            <div class="hidden" id="annual_mileage"> 
+                <label for="annual_mileage">Annual Mileage (default:12,000 Miles)</label>                       
+                <input class="form-control" type ="number" name="annual_mileage" step="1000"   >
+            </div>
+            <br>   
+        </form>
+    </card>
+
+    <form action="/requests" method="POST" id="new-request-form">
+        <input type="text" class="hidden" name="json" id="new-request-json-input"/>  
+        </form>
+        <button id="save-requests-btn" class="btn btn-primary hidden" >SAVE REQUEST</button> 
+
+
+        <div class="modal fade" id="errorModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title">ERROR</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                <p id="errorMessage"></p>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="modal" id ="reviewModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title">Please Review</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body" id="reviewModal-body">
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="yes-review-btn">SEND</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">EDIT</button>
+                </div>
+            </div>
+            </div>
+        </div> 
+
+
+</div>
+
+<!--This is Ajax script   -->
+<script type="text/javascript"  src="/requestScripts/requestNew.js"></script>  
