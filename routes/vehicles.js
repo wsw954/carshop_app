@@ -37,8 +37,8 @@ router.post("/vehicles", middleware.isUserLoggedIn, function(req, res){
     });
 
 
-//Route used in the user dashboard to render vehicles index form view
-router.get("/vehicles/index", middleware.isUserLoggedIn, function(req, res){
+//Index (RESTful)Route used in the user dashboard to render vehicles index form view
+router.get("/vehicles", middleware.isUserLoggedIn, function(req, res){
     res.render("vehicles/index");
 });
 
@@ -56,7 +56,42 @@ router.get("/vehicles/index/json/", middleware.isUserLoggedIn, function(req, res
     };        
 });
 
+//Show route, (RESTful) from the public/vehicleIndex.js file
+router.get("/vehicles/:id", middleware.isUserLoggedIn, function(req, res){
+    var vehicle = {};
+    vehicle.id = req.params.id;
+    //Add make & model to object to allow vehicleShow script file to retrieve the relevant modelJSON file 
+    vehicle.make = req.query.make.toLowerCase();
+    vehicle.model = req.query.model.toLowerCase();
+        res.render("vehicles/show", {vehicle:vehicle});
+});
 
+
+//Edit (RESTful) route called by the EDIT button in vehicles/show.ejs,renders the edit form
+router.get("/vehicles/:id/edit", middleware.checkVehicleOwnership, function(req, res){
+    var vehicle = {};
+    vehicle.id = req.params.id;
+    vehicle.make = req.query.make;
+    vehicle.model = req.query.model;
+        res.render("vehicles/edit", {vehicle:vehicle});
+
+});
+
+
+
+//GET request to retrieve specified vehicle document JSON from database, (This route is called multiple times from different views)
+router.get("/vehicles/json/:id", middleware.isUserLoggedIn, function(req, res){
+    if(req.xhr){
+        //Get the vehicle selected by user
+        Vehicle.findById({ _id: req.params.id}, function (err, docs) {
+            var vehicle = docs;
+        res.json({vehicle:vehicle});
+            });
+        } 
+        else {        
+            res.render("vehicles/index");
+    };        
+});
 
 
 //GET request to populate Make dropdown menu (Called  in vehicleNew.js script file)

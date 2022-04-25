@@ -1,0 +1,139 @@
+<%- include('../partials/header') %>
+
+
+<div class="container">
+    <!-- Vehicle ID -->
+    <input id="vehicleID" type="text" class="hidden" value=<%= vehicle.id %>>
+     <!-- Vehicle make -->
+     <input id="vehicleMake" type="text" class="hidden" value=<%= vehicle.make %>>
+    <!-- Vehicle model -->
+    <input id="vehicleModel" type="text" class="hidden" value=<%= vehicle.model %>>
+  
+    <form class="well form-horizontal" action="/vehicles/new" method="post"  id="vehicle_new_form">
+          <fieldset>
+          <!-- Form Name -->
+          <legend><center><h2><b>Edit Vehicle Form</b></h2></center></legend><br>
+          <br>
+          <h4>Vehicle ID: <%= vehicle.id %></h4>  
+          <br>
+          <!-- Make Input-->
+          <div class="form-group">
+            <label class="col-md-4 control-label">Make</label>  
+              <div class="col-md-4 inputGroupContainer">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <select id="make" name="make" class="form-control" >
+                  </select>
+                </div>
+              </div>
+          </div>
+          <br>
+          <!-- Model Input-->
+          <div class="form-group hidden" id="model_fg">
+            <label class="col-md-4 control-label">Model</label>  
+              <div class="col-md-4 inputGroupContainer">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <select id="model" name="model" class="form-control " >
+                    <option value="">- Select -</option>
+                  </select>
+                </div>
+              </div>
+          </div>
+          <br>        
+          <!-- Trim Input-->        
+          <div class="form-group details hidden" id="trim_fg">
+                    <label class="col-md-4 control-label"></label>  
+                      <div class="col-md-4 inputGroupContainer">
+                      <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <select id="trim" name="trim" class="form-control " >
+                            <option value="">- Select -</option>
+                          </select>
+                        </div>
+                      </div>
+          </div>     
+          <br>
+            <!-- MSRP Input-->
+            <div class="form-group hidden" id="msrp_fg">
+              <label class="col-md-4 control-label">MSRP as built</label>  
+                <div class="col-md-4 inputGroupContainer">
+                  <div class="input-group">
+                      <input id="msrp" type="number" readonly></input>   
+                      </div>
+                    </div>
+                </div>
+          <br>      
+          
+  
+  
+          </fieldset>
+  </form>
+  
+        <!-- Form to hold EDIT vehicle json -->
+        <div class="container form-group hidden" >
+          <form action="/vehicles/<%= vehicle.id %>?_method=PUT" method="POST" id="edit-vehicle-form" > 
+              <input type="text" class="hidden" name="json" id="edit-vehicle-json-input"/>                       
+          </form>
+          <br>
+        </div>
+          <!-- Button -->
+          <div class="form-group hidden " id="save-btn-div">
+            <label class="col-md-4 control-label"></label>
+            <div class="col-md-4"><br>
+              <button type="button" class="btn btn-primary" id="save-changes-btn" >SAVE CHANGES <span class="glyphicon glyphicon-send"></span></button>
+              <button type="button" class="btn btn-primary" id="undo-edit-btn" >UNDO EDIT <span class="glyphicon glyphicon-send"></span></button>
+            </div>
+          </div>
+  
+  
+  
+  <!--Template for dropdown inputs-->
+  <div class="form-group hidden" id="dropdown_fg_template">
+    <label class="col-md-4 control-label"></label>  
+      <div class="col-md-4 inputGroupContainer">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+        <select id="mold" name="mold" class="form-control " >
+          </select>
+        </div>
+      </div>
+  </div>
+  
+  <!--Template for checkbox inputs-->
+  <div class="form-group hidden" id="checkbox_template">
+    <label class="col-md-4 control-label"></label>  
+  </div>
+  
+  
+  
+   <!-- Error Modal-->
+  <div class="modal fade" id="errorModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">ERROR</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="errorMessage"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  </div>
+  
+  
+  <!--Model specific script   -->
+  <script type="text/javascript"  src="/vehicleScripts/modelScripts/<%=vehicle.make.toLowerCase()%>/<%=vehicle.model.toLowerCase()%>Validate.js" class="modelScript" id="<%=vehicle.model.toLowerCase()%>Script"></script>    
+  <!--Vehicle Edit script  -->
+  <script type="text/javascript"  src="/vehicleScripts/vehicleEdit.js" id="vehicleEditScript" ></script>   
+  

@@ -76,6 +76,33 @@ middlewareObj.checkUserAccountOwnership = function(req, res, next){
     }
 };
 
+//Check Vehicle Ownership
+middlewareObj.checkVehicleOwnership = function(req, res, next){
+    //Check if user is logged in
+        if(req.isAuthenticated()){      
+            Vehicle.findById(req.params.id, function(err, foundVehicle){
+                if(err || !foundVehicle){
+                    req.flash("error", "Vehicle not found");
+                    res.redirect("back");
+                } else {
+                    //Check if user is the creator of the vehicle
+                    if(foundVehicle.creatorID.equals(req.user._id)){
+                        next();
+                    } else {
+                        //If not owner, flash message and redirect
+                        req.flash("error", "You don't have permission to EDIT or DELETE this vehicle");
+                        res.redirect("back");
+                    }                
+                }
+            });
+        } else {
+            req.flash("error", "You need to be logged in to do that");
+            res.redirect("back");;
+    }
+};
+
+
+
 //Get the url for JSON files of models for make selected
 middlewareObj.modelListJSON = function(make) {  
     return ("../src/assets/"+make+"/"+make+"Models.json")

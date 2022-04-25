@@ -1,0 +1,84 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+
+    <h1>Vehicle Show Page</h1>
+    <div class="hidden" id="userID" data-value="<%=currentUser.id%>"></div>
+    <div class="hidden" id="userKind" data-value="<%=currentUser.kind%>"></div>
+    <div class="hidden" id="vehicleID" data-value="<%=vehicle.id%>"></div>
+
+    <br>
+    <div class="card" id="baseInfo">
+        <ul class="list-group baseInfo">
+            <li class="list-group-item"><strong>Vehicle ID: </strong><%=vehicle.id%>
+
+            </li>
+            <br>
+            <li class="list-group-item" id="make">
+              <strong>Make: </strong>
+            </li>
+                <br>
+            <li class="list-group-item" id="model">
+              <strong>Model: </strong>
+            </li>
+            <br>
+            <li class="list-group-item" id="year">
+              <strong>Year: </strong>
+            </li>
+                <br>
+            <li class="list-group-item" id="msrp">
+              <strong>MSRP: </strong>
+            </li>
+            <br>
+        </ul>
+      </div>
+      <br>
+        <div class="card" id="modelDetails">
+            <h6 class="card-title"><strong>Details</strong></h6>
+            <ul class="list-group" id="details">
+              <li class="list-group-item" id="trim" >
+                <strong>Trim:</strong>
+              </li>
+            </ul>
+            </div>
+            <br>
+        <br>
+
+<div class="container hidden" id="editDiv">
+    <div class="container">
+        <a  class="btn btn-secondary active" id="edit-vehicle-btn" >EDIT VEHICLE
+        </a>
+    </div>
+</div>
+<br>
+<div class="container hidden" id="requestDiv">
+  <div class="container">
+      <a  class="btn btn-secondary active" id="new-request-btn" >CREATE A REQUEST FOR THIS VEHICLE
+      </a>
+  </div>
+  <br>
+
+</div>
+<div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-labelledby="error-modal-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="error-modal-label">Sorry</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>You Currently Already have an active Requests</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>   
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+ 
+<script type="text/javascript"  src="/vehicleScripts/vehicleShow.js"></script>

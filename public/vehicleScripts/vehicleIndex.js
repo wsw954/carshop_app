@@ -110,7 +110,7 @@ $(document).ready(function() {
         {
          "data": null,
          "className": "dt-center editor-edit",
-         "defaultContent": '<i class="fas fa-pencil-alt"/>',
+         "defaultContent": '<i class="fa fa-pencil-alt"></i>',
          "orderable": false,
          fnCreatedCell:function (nTd, sData, oData, iRow, iCol){
                 $(nTd).on("click", function() {
