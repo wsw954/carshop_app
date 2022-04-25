@@ -17,8 +17,8 @@ $(document).ready(function() {
                       });
                     createErrorModal(data.json);
                 } else {
-                    //Render the buyer dashboard view
-                    window.location = '/buyers/dashboard';
+                    //Render the dealer dashboard view
+                    window.location = '/dealers/dashboard';
                 }
             }, 
             error: function (jqXHR, textStatus, err) {

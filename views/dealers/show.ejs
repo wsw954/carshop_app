@@ -1,0 +1,114 @@
+<%- include('../partials/header') %>
+<div class="container">
+    <h1> Dealer Account Info</h1>
+
+<div class="container">
+    <div class= container>
+        <label for="name">First Name: <%=currentUser.first_name %> </label>
+        <br>
+        <label for="name">Last Name: <%=currentUser.last_name %> </label>
+        <br>
+        <label for="name">Username: <%=currentUser.username %> </label>
+        <br>
+        <label for="name">Dealership Name: <%=currentUser.dealership_name %> </label>
+        <br>
+        <label for="name">Main Brand: <%=currentUser.main_brand %> </label>
+        <br>
+        <div class= card>
+            <h5>Address:</h5>
+            <p><%=currentUser.street_address_line1 %></p>
+            <p><%=currentUser.street_address_line2 %></p>
+            <p><%=currentUser.city %></p>
+            <p><%=currentUser.state %></p>
+            <p><%=currentUser.zip %></p>
+            
+        </div>
+        <br>
+        <div class= "container">
+            <p>Email: <%=currentUser.email %></p>
+        </div>
+            <br>
+        <div class= "container">
+            <p>Phone: <%=currentUser.phone %></p>
+        </div>
+        <br>
+        <a href="/dealers/<%=currentUser._id %>/edit" class="btn btn-info" role="button">Edit Account Profile</a>
+      
+    </div>
+
+</div>
+
+<br>
+<form class="well form-horizontal" action="/password/change?_method=PUT" method="post"  id="password_form">
+
+    <!-- Password Change  input-->
+    <div class="form-group " >
+        <div class="container" id="change-div">
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                Change Password
+            </button>
+        </div>
+
+          <div class="collapse" id="collapseExample" data-parent="#change-div">
+              <div class="card card-body">
+                <!-- New Password-->
+                  <div class="form-group">
+                      <label class="col-md-4 control-label" >New Password</label> 
+                        <div class="col-md-4 inputGroupContainer">
+                        <div class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                      <input id="password"  name="password" placeholder="Password" class="form-control"  type="password">
+                        </div>
+                      </div>
+                      </div>
+                      <!-- Confirm Password-->
+                      <div class="form-group">
+                      <label class="col-md-4 control-label" >Confirm Password</label> 
+                        <div class="col-md-4 inputGroupContainer">
+                        <div class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                      <input id="confirm_password"  name="confirm_password" placeholder="Confirm Password" class="form-control"  type="password">
+                        </div>
+                      </div>
+                      </div>
+              </div>
+                <!-- Button -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label"></label>
+                    <div class="col-md-4"><br>
+                    <button type="submit" class="btn btn-primary" id="submit_btn" >Save New Password <span class="glyphicon glyphicon-send"></span></button>
+                        </div>
+                    </div>   
+            </div>
+
+    </div>
+ <br>
+
+</form>
+
+
+  <!-- Error Modal-->
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">ERROR</h5>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            <p id="errorMessage"></p>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+<script type="text/javascript"  src="/dealerScripts/dealerShow.js"></script>

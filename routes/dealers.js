@@ -148,6 +148,86 @@ router.get("/dealers/dashboard", middleware.isDealerLoggedIn, function(req, res)
     res.render("dealers/dashboard");
 });  
 
+//Show (RESTful) dealer info
+router.get("/dealers/:id", middleware.checkUserAccountOwnership, function(req, res){
+    res.render("dealers/show");
+
+});
+
+//Edit (RESTful) show dealer edit form
+router.get("/dealers/:id/edit", middleware.checkUserAccountOwnership, function(req, res){
+    res.render("dealers/edit");
+});
+
+//Get Dealer JSON for editing
+router.get("/dealers/json/:id", function(req, res){
+    if(req.xhr){
+        //Get the buyer document 
+        User.findById(req.user._id, function (err, docs) {
+            var dealer = docs;
+        res.json({dealer:dealer});
+            });
+        } 
+        else {        
+            res.render("dealer/show");
+    };        
+});
+
+//Update (RESTful) update buyer info form
+router.put("/dealers/:id", urlencodedParser,  [
+    check('dealership_name', 'You must enter a dealership name')
+        .exists()
+        .isLength({ min: 3 }),
+    check('main_brand', 'You must enter a main brand sold at the dealership')
+        .exists()
+        .isLength({ min: 2 }),
+    check('street_address_line1', 'You must enter a street address')
+        .exists()
+        .isLength({ min: 3 }),
+    check('city', 'You must enter a city')
+        .exists()
+        .isLength({ min: 2 }), 
+    check('state', 'You must enter a state')
+        .exists()
+        .isLength({ min: 2 }),
+    check('zip')
+        .exists()
+        .isLength({ min: 5 })
+        .withMessage('Zip Code is not valid')
+        .trim()
+        .escape(),
+    check('phone')
+        .exists()
+        .isLength({ min: 12 })
+        .withMessage('Enter a valid phone number')
+        .trim()
+        .escape(),       
+],middleware.checkUserAccountOwnership, function(req, res){
+    const errors = validationResult(req)
+    var errorsArray = errors.errors;
+    if(errorsArray.length > 0) {
+        res.json({json:errorsArray});
+    } if(errorsArray.length === 0) {
+        var editedInfo = {
+            dealership_name:req.body.dealership_name,
+            main_brand:req.body.main_brand,
+            street_address_line1: req.body.street_address_line1,
+            street_address_line2: req.body.street_address_line2,
+            city:req.body.city,
+            state:req.body.state,
+            zip: req.body.zip, 
+            phone:req.body.phone};
+            //Use passport method findByIdAndUpdate() to update the dealer mongoose document.
+            Dealer.findByIdAndUpdate(req.user._id, { $set: editedInfo}, function(err, updatedBuyer){
+                if(err){
+                    return res.redirect("/dealers/dashboard");
+                }     
+                res.json({json:editedInfo});        
+        });
+    }
+});
+
+
 
 
 module.exports = router;
