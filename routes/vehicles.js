@@ -29,7 +29,7 @@ router.post("/vehicles", middleware.isUserLoggedIn, function(req, res){
             if(err){
                 console.log(err);
             } else{
-                res.redirect("/vehicles/index");   
+                res.redirect("/vehicles");   
                     }
                 });       
             }
@@ -75,6 +75,41 @@ router.get("/vehicles/:id/edit", middleware.checkVehicleOwnership, function(req,
     vehicle.model = req.query.model;
         res.render("vehicles/edit", {vehicle:vehicle});
 
+});
+
+//Update (RESTful) POST request, replaces an existing vehicle from database after editing
+router.put("/vehicles/:id", middleware.isUserLoggedIn, function(req, res){ 
+    var vehicleJSON = JSON.parse(req.body.json);
+    //Add vehicle ID to json
+    vehicleJSON._id = req.params.id;
+    //Add the creator ID
+    vehicleJSON.creatorID = req.user.id;
+    //Add the creator type
+    vehicleJSON.creatorType = req.user.userType;
+    //Find & Update the correct vehicle
+    Vehicle.findByIdAndUpdate(req.params.id, vehicleJSON,{
+        overwrite : true,
+        new       : true
+      }, function(err, updatedVehicle){
+        if(err){
+            console.log(err);
+            } else {
+            res.redirect("/vehicles");
+            };
+    });  
+});
+
+
+//Destroy (RESTFul) POST request that deletes vehicle
+router.delete("/vehicles/:id", middleware.checkVehicleOwnership, function(req, res){
+    //Use FindByIdAndRemove
+    Vehicle.findByIdAndRemove(req.params.id, function(err){
+        if(err){
+            console.log(err);            
+        } else {
+            res.redirect("/vehicles");
+        }
+    });
 });
 
 

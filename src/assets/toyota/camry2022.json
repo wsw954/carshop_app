@@ -4,23 +4,27 @@
       
       "trim":{"label":"Trim",
              "type":"Single",
-             "choices":[{"name":"LX","price":26120,"serial":"tt1"},
-                        {"name":"Sport","price":28580,"serial":"tt2"},
-                        {"name":"Sport Special Edition","price":30070,"serial":"tt3"},
-                        {"name":"EX-L","price":32440,"serial":"tt4"},
-                        {"name":"Touring","price":38050,"serial":"tt5"},
-                        {"name":"Hybrid","price":27320,"serial":"tt6"},
-                        {"name":"Hybrid Sport","price":30670,"serial":"tt7"},
-                        {"name":"Hybrid EX-L","price":33640,"serial":"tt8"},
-                        {"name":"Hybrid Touring","price":37190,"serial":"tt9"}
+             "choices":[{"name":"LE","price":25395,"serial":"tt1"},
+                        {"name":"LE Hybrid","price":27480,"serial":"tt2"},
+                        {"name":"SE","price":26935,"serial":"tt3"},
+                        {"name":"SE Nightshade","price":27635,"serial":"tt4"},
+                        {"name":"SE Hybrid","price":29015,"serial":"tt5"},
+                        {"name":"SE Hybrid Nightshade","price":29715,"serial":"tt6"},
+                        {"name":"XLE","price":30145,"serial":"tt7"},
+                        {"name":"XLE Hybrid","price":32370,"serial":"tt8"},
+                        {"name":"XSE","price":30695,"serial":"tt9"},
+                        {"name":"XSE Hybrid","price":32920,"serial":"tt10"},
+                        {"name":"TRD","price":32460,"serial":"t11"},
+                        {"name":"XLE V6","price":35270,"serial":"tt12"},
+                        {"name":"XSE V6","price":35820,"serial":"t13"}
                         ]},
 
       "options":[
-                 {"label":"Powertrain",
+                 {"label":"Engine",
                   "type":"Single",
-                  "name":"powertrain",  
+                  "name":"engine",  
                   "choices":[
-                          {"name":"192hp CVT w/1.5L 4-Cyl Engine","price":0,"serial":"pw1",
+                          {"name":"2.5L 4-Cyl Dynamic Force Engine w/ FWD","price":0,"serial":"pw1",
                            "precursor":[["tt1", "tt2", "tt3", "tt4"]]},
                           
                           {"name":"180hp CVT w/1.5L Turbo 4-Cyl Engine","price":0, "serial":"pw2",
@@ -41,27 +45,22 @@
                   "name":"ext_color",
                   "choices":[
 
-                     {"name":"Crystal Black Pearl","price":0,"serial":"ec2",
+                     {"name":"Ruby Flare Pearl","price":425,"serial":"ec1",
                       "precursor":[["tt1","tt2","tt3","tt4"]],
                       "reset":["int_color"]
                     },
-
-                     {"name":"Lunar Silver Metallic","price":0,"serial":"ec3",
-                      "precursor":[["tt1","tt2","tt3","tt4"]],
-                      "reset":["int_color"] 
-                    },
                        
-                     { "name":"Modern Steel Metallic","price":0,"serial":"ec4",
+                     { "name":"Midnight Black Metallic","price":0,"serial":"ec2",
                        "precursor":[["tt1","tt2","tt3","tt4"]],
                        "reset":["int_color"] 
                       },
                        
-                     {"name":"Radiant Red Metallic","price":395,"serial":"ec5",
+                     {"name":"White","price":395,"serial":"ec3",
                       "precursor":[["tt1","tt2","tt3","tt4"]],
                       "reset":["int_color"]
                     },
                       
-                     {"name":"Platinum White Pearl","price":395,"serial":"ec6",
+                     {"name":"Celestial Silver Metallic","price":0,"serial":"ec4",
                       "precursor":[["tt1","tt2","tt3","tt4"]],
                       "reset":["int_color"]
                       }
@@ -88,30 +87,12 @@
                                     ["ec4", "ec6"]]}
                                       ]},
 
-                 {"label":"Wheels",
-                  "type":"Single",
-                  "name":"wheels",                     
-                  "choices":[
-
-                          {"name":"17-Inch Silver Painted Alloy Wheels","price":0,"serial":"w4",
-                              "precursor":[["tt1"]]},
-
-                          {"name":"17-Inch Black Alloy Wheels","price":1706,"serial":"w5",
-                          "precursor":[[ "tt7"]]},
-
-                          {"name":"18-Inch Alloy Wheels","price":0,"serial":"w6",
-                          "precursor":[["tt4", "tt8"]]},
-
-                          {"name":"18-Inch Matte Black Alloy Wheels","price":0,"serial":"w7",
-                          "precursor":[["tt9", "tt10"]]}
-                              ]
-                  },
 
                  {"label":"Packages",
                   "type":"Multiple",
                   "name":"packages",
                   "choices":[
-                      {"name":"All-Season Protection Package I","price":398,"serial":"pk1",
+                      {"name":"Blind Spot Monitor","price":1280,"serial":"pk1",
                        "precursor":[["tt1","tt2", "tt3","tt4", "tt5"]],
                        "unselect":["pk2","pk6"],
                        "components":["ea22","ia1","ia10"]
@@ -119,7 +100,7 @@
                       },
 
                       
-                      {"name":"All-Season Protection Package II","price":351,"serial":"pk2",
+                      {"name":"Power tilt/slide Moonroof","price":2150,"serial":"pk2",
                        "precursor":[["tt2","tt3", "tt4", "tt5"]],
                        "unselect":["pk1","pk6"],
                        "components":["ea29","ia1","ia10"]
