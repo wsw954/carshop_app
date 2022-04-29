@@ -25,7 +25,7 @@ $.getJSON(jsonRequestUrl, function(data){
    switch (userKind) {
       case 'Buyer':
         //Display & Add logic to Request Edit btns & forms
-          // displayRequestEdit();
+          displayRequestEdit();
         break;
       case 'Dealer':
           // displayAdditionalBuyerInfo();
@@ -37,8 +37,6 @@ $.getJSON(jsonRequestUrl, function(data){
 //Helper function
 function displayRequestBasicInfo(){
    //Get make & model of request vehicle
-   var make = requestJSON.vehicle.make.toLowerCase();
-   var model = requestJSON.vehicle.model.toLowerCase();
    $("#request-div").show();
    //Display request basic info
    $('#requestID').text('Request ID-'+requestJSON._id); 
@@ -75,6 +73,11 @@ function displayVehicleDetails(){
   var jsonUrlModelData = "/vehicles/src/json/"+vehicle.make+"/"+vehicle.model+"/"+vehicle.year;
   $.getJSON(jsonUrlModelData, function(modelData){
     createDetailTemplate(modelData);
+    //Get trim data
+    var trimData = modelData.data.trim.choices.filter(trim =>
+                trim.serial === requestJSON.vehicle.details[0]);
+    //Add trim name details card
+    $("#trim").append(trimData[0].name);
   })
 };
 

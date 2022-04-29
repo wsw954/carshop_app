@@ -102,6 +102,33 @@ middlewareObj.checkVehicleOwnership = function(req, res, next){
 };
 
 
+//Check Request Ownership
+middlewareObj.checkRequestOwnership = function(req, res, next){
+    //Check if user is logged in
+        if(req.isAuthenticated()){      
+            Request.findById(req.params.id, function(err, foundRequest){
+                if(err || !foundRequest){
+                    req.flash("error", "Request not found");
+                    res.redirect("back");
+                } else {
+                    //Check if user is the creator of the request
+                    if(foundRequest.buyer.equals(req.user._id)){
+                        next();
+                    } else {
+                        //If not owner, flash message and redirect
+                        req.flash("error", "You don't have permission to EDIT  this request");
+                        res.redirect("back");
+                    }                
+                }
+            });
+        } else {
+            req.flash("error", "You need to be logged in to do that");
+            res.redirect("back");;
+    }
+};
+
+
+
 
 //Get the url for JSON files of models for make selected
 middlewareObj.modelListJSON = function(make) {  

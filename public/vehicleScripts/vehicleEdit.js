@@ -43,7 +43,7 @@ $(document).ready(function() {
         //Set makeDropdown to make of unedited vehicle
         $(makeDropdown).val(vehicleJSON.make);
         //Retrieve  the relevant model JSON file from src folder
-        getModelJSON(vehicleJSON.model);
+        getModelData(vehicleJSON.make,vehicleJSON.model, vehicleJSON.year);
         //Load the models for make into model dropdown
         loadModels(vehicleJSON.make);
         //Set model dropdown to match model of unedited vehicle
@@ -53,8 +53,6 @@ $(document).ready(function() {
         //Set the trim dropdown to match the unedited vehicle
         $(trimDropdown).find("[data-serial="+vehicleJSON.details[0]+"]").prop("selected", true);
         //Display MSRP element
-        console.log(vehicleJSON);
-        // $('#msrp').val(vehicleJSON.msrp);
         $('#msrp_fg').show();
         //Create the options form groups for model
         createOptionsFormGroups();
@@ -127,7 +125,7 @@ $(document).ready(function() {
             //Assign value to global variable for model selected
             model = $(this).val();
             //Retrieve the src file for model chosen
-            getModelJSON(model);
+            getModelData(make,model,2022);
             //Add relevant model script file
             changeModelScript(model);
             //Add trim data to form group
@@ -183,8 +181,8 @@ $(document).ready(function() {
     };
 
     //Helper function to get src data file for model chosen
-    function getModelJSON(model){
-        var jsonUrl = "/vehicles/src/json/"+make+"/"+model;
+    function getModelData(make, model, year){
+        var jsonUrl = "/vehicles/src/json/"+make+"/"+model+"/"+year;
         //Get the model data json
             $.ajax({
                     url: jsonUrl,

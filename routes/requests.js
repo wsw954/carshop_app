@@ -38,7 +38,7 @@ router.post("/requests", middleware.isUserLoggedIn, function(req, res){
     });     
 });
 
-//SHOW (RESTful) route to render the request show view
+//Show (RESTful) route to render the request show view
 router.get("/requests/:id", middleware.isUserLoggedIn, function(req, res){
     var request = req.params.id;
     res.render("requests/show",{request:request});
@@ -285,6 +285,37 @@ router.get("/requests", middleware.isUserLoggedIn, function(req, res){
     }
   
 });
+
+
+//Update requests (RESTful) route (The only edit allowed for a Request is to Cancel)
+router.put("/requests/:id", middleware.checkRequestOwnership, function(req, res){
+    Request.findByIdAndUpdate(req.params.id,{ status: "Cancelled"}, function(err, doc){
+        if(err){
+            console.log(err);            
+        } else {
+            Offer.updateMany({request:req.params.id}, {status:"Request Cancelled"}, function(err, doc){
+                if(err){
+                    console.log(err);            
+                } else {
+                    res.render("buyers/dashboard");
+                }
+            });   
+        }    
+    });
+});
+
+//Destroy (RESTFul) route deletes Request
+router.delete("/requests/:id", middleware.checkRequestOwnership, function(req, res){
+    //Find and Remove Request
+    Request.findByIdAndRemove(req.params.id, function(err){
+        if(err){
+            console.log(err);            
+        } else {
+            res.redirect("/buyers/dashboard");
+        }
+    });
+});
+
 
 
 module.exports = router;
