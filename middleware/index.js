@@ -109,8 +109,8 @@ middlewareObj.modelListJSON = function(make) {
 };
 
 //Get the data JSON file for make & model selected
-middlewareObj.modelDataJSON = function(make, model){
-    return ("../src/assets/"+make+"/"+model+"2022.json")
+middlewareObj.modelDataJSON = function(make, model, year){
+    return ("../src/assets/"+make+"/"+model+year+".json")
 };
 
 

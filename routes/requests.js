@@ -44,13 +44,33 @@ router.get("/requests/:id", middleware.isUserLoggedIn, function(req, res){
     res.render("requests/show",{request:request});
 });
 
+//Retrieves a single json doc for request SHOW view, called in requestShow.js script file
+router.get("/requests/json/:id", middleware.isUserLoggedIn, function(req, res){
+    //If the User is a Buyer
+    if(req.xhr){
+        //Use request ID to retrieve the request, exclude any Cancelled Request
+        Request.findById({ _id: req.params.id}).populate('vehicle').populate('buyer').exec(function (err, docs) {
+            if(err){
+                console.log(err);
+                //Redirect depending on kind of user
+                if(req.user.kind === 'Buyer'){
+                    res.redirect("/buyers/landings");
+                } if(req.user.kind === 'Dealer'){
+                    res.redirect("/dealers/landings");
+                }
+            } else{
+                var request= docs; 
+                res.json({request:request});
+            }
+      });
+    }; 
+});
+
 
 //Index (RESTful) route that handles click on Requests link in dealerDashboard 
 router.get("/requests", middleware.isUserLoggedIn, function(req, res){
     res.render("requests/index"); 
 });
-
-
 
 
  //Route to retrieve json index of Requests, depending on kind of user & filters

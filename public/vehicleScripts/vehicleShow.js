@@ -13,9 +13,10 @@ $(document).ready(function() {
     //Get the relevant json file for vehicle in database
     $.getJSON(jsonUrlVehicle, vehicleData => {
         vehicleJSON = vehicleData.vehicle;
-        var jsonUrlModel = "/vehicles/src/json/"+vehicleJSON.make+"/"+vehicleJSON.model;
+        //Create url to retrieve model data from db
+        var jsonUrlModelData = "/vehicles/src/json/"+vehicleJSON.make+"/"+vehicleJSON.model+"/"+vehicleJSON.year;
     //Get the relevant data file from src for vehicle make & model    
-    $.getJSON(jsonUrlModel, modelData => {
+    $.getJSON(jsonUrlModelData, modelData => {
         modelJSON = modelData;
         displayBaseInfo();  
         displayModelDetails();
@@ -45,7 +46,7 @@ $(document).ready(function() {
         $("#msrp").append(vehicleJSON.msrp);
     };
 
-    //Helper function to display the civic model details
+    //Helper function to display the vehicle model details
     function displayModelDetails(){
         //Create template
         createDetailTemplate();

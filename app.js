@@ -13,7 +13,7 @@ var express = require('express'),
 var buyerRoutes = require("./routes/buyers"),
     dealerRoutes = require("./routes/dealers"),
     indexRoutes = require("./routes/index"),
-    // offerRoutes = require("./routes/offers"),
+    offerRoutes = require("./routes/offers"),
     requestRoutes = require("./routes/requests"),
     vehicleRoutes = require("./routes/vehicles");
 
@@ -62,7 +62,7 @@ app.use(require("express-session")({
 app.use("/", buyerRoutes);
 app.use("/", dealerRoutes);
 app.use("/", indexRoutes);
-// app.use("/", offerRoutes);
+app.use("/", offerRoutes);
 app.use("/", requestRoutes);
 app.use("/", vehicleRoutes);
 

@@ -153,10 +153,11 @@ router.get("/vehicles/models/:make/", middleware.isUserLoggedIn, function(req, r
 
 //Get request used to retrieve the model specific data from src file, needed to build new vehicle of specified model
 // (Called by the model specific script file)        
-router.get("/vehicles/src/json/:make/:model", middleware.isUserLoggedIn, function(req, res){ 
+router.get("/vehicles/src/json/:make/:model/:year", middleware.isUserLoggedIn, function(req, res){ 
     var make = req.params.make;
     var model = req.params.model;
-    var modelDataJSON = require(middleware.modelDataJSON(make, model));
+    var year = req.params.year;
+    var modelDataJSON = require(middleware.modelDataJSON(make, model, year));
     if(req.xhr){
         res.json(modelDataJSON);   
     } 
