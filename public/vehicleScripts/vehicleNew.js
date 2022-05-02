@@ -44,7 +44,7 @@ $(document).ready(function() {
             //Assign value to global variable for model selected
             model = $(this).val();
             //Retrieve the src file for model chosen
-            getModelJSON(model);
+            getModelData(make,model,2022);
             //Add relevant model script file
             addModelScript(model);
             //Add trim data to form group
@@ -94,8 +94,8 @@ $(document).ready(function() {
     };
 
     //Helper function to get src data file for model chosen
-    function getModelJSON(model){
-        var jsonUrl = "/vehicles/src/json/"+make+"/"+model;
+    function getModelData(make,model,year){
+        var jsonUrl = "/vehicles/src/json/"+make+"/"+model+"/"+year;
         //Get the model data json
             $.ajax({
                     url: jsonUrl,

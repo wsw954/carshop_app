@@ -9,15 +9,178 @@ const middlewareObj = require("../middleware");
 const { isUserLoggedIn } = require("../middleware");
 
 
+//Index (RESTful) routes to the offers index view
+router.get("/offers", middleware.isDealerLoggedIn, function(req, res){
+    res.render("offers/index");
+   
+});
+
+//New (RESTful) route renders the new Offer form (Called by Make Offer btn, inside dealer Inventory Table from the Request Index view)
+router.get("/offers/new", middleware.isDealerLoggedIn, function(req, res){
+    //Get the request ID for the new offer
+    var request = {};
+    request.id= req.query.request_id;
+    request.offerVehicle=  req.query.dealer_vehicle;
+        res.render("offers/new",{request:request});     
+});
+
+//Create (RESTful) route, saves a new offer 
+router.post("/offers", middleware.isDealerLoggedIn, function(req, res){  
+    User.findById(req.user._id, function(err, user){
+    if(err){
+        console.log(err);
+        res.redirect("/dealers/landings");
+    } else{
+        //Get the offer JSON
+        var offerJSON = JSON.parse(req.body.json);
+        //Make status Active, since this is a New Offer
+        offerJSON.status = "Active";
+        //Create new offer in db
+        Offer.create(offerJSON, function(err, offer){
+            if(err){
+                console.log(err);
+            } else{    
+                //Find the request this offer is matched to
+                Request.findOneAndUpdate({
+                    _id: offerJSON.request
+                },{
+                    //Add the offer ID to the offers array
+                    $push : { offers : offer._id }
+                }, function(err){
+                    if (err) throw err
+                    else
+                    { 
+                        //Redirect to the offers show view
+                        res.redirect("/offers"); 
+                    }
+                });
+                  
+                }
+            });  
+        }
+    });    
+});
+
+//SHOW (RESTFul)route handles the initial 
+router.get("/offers/:id", middleware.isUserLoggedIn, function(req, res){  
+    var offer = req.params.id;
+    res.render("offers/show", {offer:offer});
+});
+
+//EDIT (RESTFul) Show edit form for Offer
+router.get("/offers/:id/edit", middleware.checkOfferOwnership, function(req, res){  
+    var offer = req.params.id;
+    res.render("offers/edit", {offer:offer});
+});
+
+//Update (RESTFul)  offers  PUT  route
+router.put("/offers/:id", middleware.checkOfferOwnership, function(req, res, next){
+    var json = JSON.parse(req.body.json);
+        switch (json.action) {
+            case 'Accept':
+                //Change status of all non-accepted Offers to "Close"
+                Offer.updateMany({_id: {$ne: req.params.id},request:json.request},{ status: "Closed"}, function(err, offerFound){
+                    if(err){
+                        console.log(err);            
+                    } else {
+                //Change status of Accepted Offer
+                Offer.findByIdAndUpdate(req.params.id,{ status: "Accepted"}, function(err, offerFound){
+                    if(err){
+                        console.log(err);            
+                    } else {
+                        //Change status of Request
+                        Request.findByIdAndUpdate({_id:offerFound.request}, {status:"Accepted"}, function(err, requestFound){
+                            if(err){
+                                console.log(err);            
+                            } else {
+                                res.redirect("/requests/"+offerFound.request);
+                                    }
+                                });   
+                            }
+                         });   
+                    }
+                });       
+            break;
+            case 'Edit':
+                Offer.findByIdAndUpdate(req.params.id,{ $set: { dealerVehicle: json.offer.dealerVehicle, monthlyPayment:json.offer.monthlyPayment, totalPayment:json.offer.totalPayment }}, function(err, offerFound){
+                    if(err){
+                        console.log(err);            
+                    } else {
+                        res.redirect('/offers');   
+                    }
+                }); 
+            break;
+        }
+});
+
+//Destroy (RESTFul) route deletes Offer
+router.delete("/offers/:id", middleware.checkOfferOwnership, function(req, res){
+    var json = JSON.parse(req.body.json);
+    switch (true) {
+        case json.numberOffers === 1:
+         //First, find the request and delete the request to which this offer was made  
+          Request.findByIdAndRemove(json.requestID,function(err, requestFound){
+            if(err){
+                console.log(err);            
+            } else {
+                //Next, delete the offer
+                Offer.findByIdAndRemove(req.params.id, function(err){
+                    if(err){
+                        console.log(err);            
+                    } else {
+                        res.redirect("/offers");
+                    }
+                })
+            }
+        }); 
+          break;
+        case json.numberOffers > 1:
+            //First, find the request and remove from offers array, this offer
+            Request.findByIdAndUpdate(json.requestID, { $pullAll: {offers: [req.params.id]}}, { new: true },function(err, requestFound){
+                if(err){
+                    console.log(err);            
+                } else {
+                    //Next, delete the offer
+                    Offer.findByIdAndRemove(req.params.id, function(err){
+                        if(err){
+                            console.log(err);            
+                        } else {
+                            res.redirect("/offers");
+                        }
+                    })
+                }
+            });   
+            break;
+      }
+});
+
+//Retrieve json of a single offer doc from db
+router.get("/offers/json/:id", middleware.isUserLoggedIn, function(req, res){ 
+    if(req.xhr){
+        Offer.findById({_id: req.params.id}).
+        populate('dealerVehicle').
+        populate({ path: 'request', 
+                   model: 'Request',
+                   populate:[{path:'buyer',
+                              model:'Buyer'},
+                             {path:'vehicle',
+                              model:'Vehicle'}] }).exec(function (err, docs){
+                if(err){
+                console.log(err);
+                res.redirect("/vehicles");
+                } else {
+                    var offer = docs;
+                    res.json({offer:offer});
+                }
+            }); 
+    } else {
+        res.redirect("/vehicles");
+    }
+});
 
 
 
-
-
-
-
-
-//Get route for index of offers json, using a context variable and filters
+//Retrieve json of index of offers docs, from db using variables and filters
 router.get("/offers/index/json", middleware.isUserLoggedIn, function(req, res){
     if(req.xhr){
         switch (req.query.context){

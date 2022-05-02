@@ -127,6 +127,50 @@ middlewareObj.checkRequestOwnership = function(req, res, next){
     }
 };
 
+//Check Offer Ownership
+middlewareObj.checkOfferOwnership = function(req, res, next){
+    //Check if user is logged in
+        if(req.isAuthenticated()){  
+            Offer.findById({_id: req.params.id}).
+            populate({ path: 'request', 
+                       model: 'Request',
+                       populate:[{path:'buyer',
+                                  model:'Buyer'},
+                                 {path:'vehicle',
+                                  model:'Vehicle'}] }).exec(function (err, foundOffer){
+                    if(err){
+                    // console.log(err);
+                    res.redirect("back");
+                    } else {
+                        switch (req.user.kind) {
+                            case 'Dealer':
+                              if(foundOffer.dealer.equals(req.user._id)){
+                                  next();
+                              } else {
+                                //If not owner, flash message and redirect
+                                req.flash("error", "You don't have permission to EDIT  this Offer");
+                                res.redirect("back");
+                            } 
+
+                              break;
+                            case 'Buyer': 
+                              if(foundOffer.request.buyer._id.equals(req.user._id)){
+                                    next();
+                                } else {
+                                    //If not owner, flash message and redirect
+                                    req.flash("error", "You don't have permission to ACCEPT this Offer");
+                                    res.redirect("back");
+                                } 
+                                break;
+                          }
+                    }
+                });
+        } else {
+            req.flash("error", "You need to be logged in to do that");
+            res.redirect("back");;
+    }
+};
+
 
 
 

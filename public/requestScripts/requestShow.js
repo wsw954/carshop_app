@@ -28,7 +28,8 @@ $.getJSON(jsonRequestUrl, function(data){
           displayRequestEdit();
         break;
       case 'Dealer':
-          // displayAdditionalBuyerInfo();
+        $("#cancel_request_btn").hide()
+          displayAdditionalBuyerInfo();
           // getDealerInfo();
           break;  
     };
@@ -137,7 +138,7 @@ function displayVehicleDetails(){
           //Add form action w/requestID to delete-request-form
           $("#delete-request-form").attr('action', '/requests/'+ requestJSON._id+"?_method=DELETE");
           //Display cancel btn
-          $("#cancel_request").show();
+          $("#cancel_request_btn").show();
       }
           //Add logic to the cancel btn
           $("#cancel_request").click(function(e){
@@ -170,7 +171,7 @@ function displayVehicleDetails(){
   //Additional Buyer info, specific for Dealers
   function displayAdditionalBuyerInfo(){
       $("#buyerID").after($('<div></div>').text('State: ' +requestJSON.buyer.state));
-      $("#buyerID").after($('<div></div>').text('Zip: ' +requestJSON.buyer.zip_code));
+      $("#buyerID").after($('<div></div>').text('Zip: ' +requestJSON.buyer.zip));
       $("#buyerID").after($('<div></div>').text('City: ' +requestJSON.buyer.city));
       $("#buyerID").after($('<div></div>').text('User Name: ' +requestJSON.buyer.username));
       $("#buyerID").after($('<div></div>').text('Credit Score: ' +requestJSON.buyer.credit_score));

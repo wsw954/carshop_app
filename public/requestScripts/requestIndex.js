@@ -176,7 +176,7 @@ $(document).ready(function() {
             modelDropdown.empty();
             modelDropdown.append('<option selected="true" value=0 >All Models</option>');
             modelDropdown.prop('selectedIndex', 0);
-            var jsonUrl = "/vehicles/make/"+ make;
+            var jsonUrl = "/vehicles/models/"+ make;
             $.getJSON(jsonUrl, function (data) {
                 $.each(data, function (key, entry) {
                     modelDropdown.append($('<option></option>').attr('value', entry.name).text(entry.name));

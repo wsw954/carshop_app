@@ -12,11 +12,10 @@ $(document).ready(function() {
         case "Buyer":
             //Create table for buyers
             getBuyerInfo();
-            
             break;
         case "Dealer":
             //Function to get Dealer info & subsequently create dealer table
-            // getDealerInfo();
+            getDealerInfo();
             break;   
     }; 
 
@@ -41,7 +40,6 @@ $(document).ready(function() {
                     })
                     dataArray.push(vehicle);        
                 });
-                console.log(dataArray);
                 createBuyerTable(dataArray);
             });
         };
@@ -66,10 +64,8 @@ $(document).ready(function() {
                         vehicle.offers.push(offer._id)
                     }
                 })
-                
                 dataArray.push(vehicle);        
             });
-            
             createDealerTable(dataArray);
         });
     };
@@ -189,7 +185,7 @@ function createDealerTable(data){
         fnCreatedCell:function (nTd, sData, oData, iRow, iCol){
             $(nTd).on("click", function() {
                     //Route to show view for vehicle chosen
-                    window.location = "/vehicles/"+oData._id+"/edit?model="+oData.model; 
+                    window.location = "/vehicles/"+oData._id+"/edit?make="+oData.make+"&model="+oData.model; 
                     });
                     }
     },
