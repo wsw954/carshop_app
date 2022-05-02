@@ -1,6 +1,8 @@
 {"data":
       
-    { "year":"2022",
+    { "model":"Camry",
+      
+      "year":"2022",
       
       "trim":{"label":"Trim",
              "type":"Single",
@@ -131,9 +133,9 @@
                   },
 
 
-                  {"label":"External Accessories",
+                  {"label":"Exterior",
                    "type":"Multiple",
-                   "name":"ext_acc",
+                   "name":"ext",
                     "choices":[
                                {"name":"Bike Attachment Frame Mount","price":201, "serial":"ea1",
                                 "precursor":[["tt5","tt6"]]}, 
@@ -230,9 +232,9 @@
                                 "precursor":[["tt2","tt3","tt4","tt5","tt6"]]}   
                                ]},
 
-                   {"label":"Internal Accessories",
+                   {"label":"Interior",
                     "type":"Multiple",
-                    "name":"int_acc",
+                    "name":"int",
                     "choices":[                                 
                               {"name":"All Season Floor Mats","price":174, "serial":"ia1",
                               "precursor":[["tt1","tt3","tt4"]]}, 
@@ -265,14 +267,9 @@
                                   "precursor":[["tt1", "tt3","tt4"]]},
 
                               {"name":"Trunk Tray Dividers","price":62, "serial":"ia11",
-                                  "precursor":[["tt1","tt3","tt4","tt6"]]}]},
+                                  "precursor":[["tt1","tt3","tt4","tt6"]]}]}
 
-                      {"label":"Electronic Accessories",
-                       "type":"Multiple",
-                       "name":"elec_acc",
-                       "choices":[                                 
-                                  {"name":"Engine Block Heater","price":86, "serial":"ela1",
-                                  "precursor":[["tt1", "tt2", "tt3","tt4"]]}]}
+                      
               ]
       }
 

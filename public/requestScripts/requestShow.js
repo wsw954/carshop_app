@@ -19,7 +19,7 @@ $.getJSON(jsonRequestUrl, function(data){
   requestJSON = data.request;
   displayRequestBasicInfo();
   //Call helper function to display vehicle details card
-  displayVehicleDetails();
+  getModelData();
   // createOfferTable();
    //Check for type of User
    switch (userKind) {
@@ -44,6 +44,7 @@ function displayRequestBasicInfo(){
    $('#buyerID').text('Buyer ID: ' +requestJSON.buyer._id);
    $('#vehicleMake').text('Make: ' +requestJSON.vehicle.make);
    $('#vehicleModel').text('Model: ' +requestJSON.vehicle.model);
+   $('#vehicleYear').text('Year: ' +requestJSON.vehicle.year);
    $('#vehicleMSRP').text('MSRP: $' +requestJSON.vehicle.msrp);
      //Display request details
     if(requestJSON.purchaseType === "Cash"){
@@ -68,7 +69,7 @@ function displayRequestBasicInfo(){
 };
 
 //Helper function to display vehicle details
-function displayVehicleDetails(){
+function getModelData(){
   var vehicle = requestJSON.vehicle;
   //Create url to retrieve model data from db
   var jsonUrlModelData = "/vehicles/src/json/"+vehicle.make+"/"+vehicle.model+"/"+vehicle.year;

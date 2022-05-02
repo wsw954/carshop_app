@@ -1,0 +1,169 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+    <h3>Offer Show </h3>
+    <h4 id="userName" >User Name:<%= currentUser.username %></h4>
+    <input type="text" class="hidden" value="<%=currentUser.kind%>" id="userKind"/>
+    <input type="text" class="hidden" value="<%=currentUser._id%>" id="userID"/>
+    <h4 id="offerID" data-value=<%= offer %>>Offer ID:  <%= offer %> </h4>
+    <h5 id="requestID" ></h5>
+    <h5 id="requestStatus" ></h5>
+    <h5 id="offerStatus" ></h5>
+    <br>
+
+
+   <div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Requested Vehicle</h5>
+              <div class="container">
+                <ul class="list-group baseInfo">
+                    <li class="list-group-item" id="requestMake">
+                    </li>
+                        <br>
+                    <li class="list-group-item" id="requestModel">
+                    </li>
+                        <br>
+                    <li class="list-group-item" id="requestMSRP">
+                    </li>
+                </ul>
+                <button id="request-vehicle-det-btn"class="btn btn-primary" data-toggle="collapse"
+            data-target="#request-vehicle-det-div" aria-expanded="false" aria-controls="request-vehicle-det-div">Vehicle Details</button>
+            <div class="collapse border border-primary rounded " id="request-vehicle-det-div">
+                    <div class="card" id="request-vehicle-det-card">
+                    </div>  
+            </div>
+                    <br>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Offer Vehicle</h5>
+              <div class="container">
+                <ul class="list-group baseInfo">
+                    <li class="list-group-item" id="offerMake">
+                    </li>
+                        <br>
+                    <li class="list-group-item" id="offerModel">
+                    </li>
+                        <br>
+                    <li class="list-group-item" id="offerMSRP">
+                    </li>
+                </ul>
+                <button id="offer-vehicle-det-btn"class="btn btn-primary" data-toggle="collapse"
+            data-target="#offer-vehicle-det-div" aria-expanded="false" aria-controls="offer-vehicle-det-div">Vehicle Details</button>
+            <div class="collapse border border-primary rounded " id="offer-vehicle-det-div">
+                    <div class="card" id="offer-vehicle-det-card">
+                    </div>  
+            </div>
+                    <br>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+   </div> 
+    <br>
+    <div class="card">
+        <div class="card-body col-sm-6" id="paymentDetails">
+          <h5 class="card-title">Terms Offered </h5>
+        </div>
+    </div>   
+<br>
+
+<div class="card">
+  <div class="card-body col-sm-6" id="offersDetails">
+    <ul class="list-group">
+      <li class="list-group-item" id="status">
+      </li>
+      <li class="list-group-item" id="matchingOffers">
+      </li>
+      <li class="list-group-item" id="dealerName">Dealer:Other
+      </li>
+    </ul>
+  </div>
+  </div>
+<br>
+
+<div id="offer-div" class="container hidden">
+  <button id="offer_competing"class="btn btn-primary" data-toggle="collapse"
+  data-target="#offer-div" aria-expanded="false" aria-controls="offer-div">Competing Offers</button>
+  <div class="collapse border border-primary rounded " id="offer-div">
+          <table class="table bootstrap-table bootstrap4" id="offer-table">   
+              </table>  
+  </div>
+</div> 
+<br>
+
+    <form method="POST" id="edit-offer-form" >
+        <input type="text" class="hidden" name="json" id="edit-offer-input"/>  
+    </form>
+
+    <div class="container">
+      <button id="offer-accept" class="btn btn-primary hidden" >ACCEPT OFFER</button>
+      <button id="offer-edit" class="btn btn-primary hidden" >Edit Offer</button>
+
+    </div>
+
+        <br>
+        <br>
+        <div id="inv-div" class="container hidden">
+          <button id="inv_select"class="btn btn-primary" data-toggle="collapse"
+          data-target="#dealer-inv" aria-expanded="false" aria-controls="dealer-inv">View Inventory</button>
+          <div class="collapse border border-primary rounded " id="dealer-inv">
+                  <table class="table bootstrap-table bootstrap4" id="dealer-inv-table">   
+                      </table>  
+          </div>
+      </div>
+       
+ 
+        
+
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content form-elegant">
+            <div class="modal-header text-center d-block">
+              <h5 class="modal-title text-center">ERROR</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p id="errorMessage"></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal" id ="acceptModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Confirm</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" id="acceptModal-body">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" id="confirm-accept-btn">YES</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+</div>
