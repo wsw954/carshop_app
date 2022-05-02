@@ -1,0 +1,153 @@
+<%- include('../partials/header') %>
+
+
+<div class="container">
+    <h3>New Offer Form</h3>
+    <h4 id="dealerName">Dealer Name:  <%= currentUser.username %> </h4>
+    <h4 id="dealerID" data-value=<%= currentUser.id %>>Dealer ID:  <%= currentUser.id %> </h4>
+    <h4 id="requestID" data-value=<%= request.id %>>Request ID:  <%= request.id %> </h4>
+    <h4 id="offerVehicle" data-value=<%= request.offerVehicle%> >Offer Vehicle ID:  <%= request.offerVehicle %> </h4>
+    <input type="text" class="hidden" value="<%=currentUser._id%>" id="userID"/>
+    <br>
+
+
+   <div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Requested Vehicle</h5>
+              <div class="container">
+                <ul class="list-group baseInfo">
+                    <li class="list-group-item" id="requestMake">
+                    </li>
+                        <br>
+                    <li class="list-group-item" id="requestModel">
+                    </li>
+                        <br>
+                    <li class="list-group-item" id="requestMSRP">
+                    </li>
+                </ul>
+                <button id="request-vehicle-det-btn"class="btn btn-primary" data-toggle="collapse"
+            data-target="#vehicle-detail" aria-expanded="false" aria-controls="vehicle-detail">Vehicle Details</button>
+            <div class="collapse border border-primary rounded " id="vehicle-detail">
+                    <div class="card" id="request-vehicle-det-card">
+                    </div>  
+            </div>
+                    <br>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Offer Vehicle</h5>
+              <div class="container">
+                <ul class="list-group baseInfo">
+                    <li class="list-group-item" id="offerMake">
+                    </li>
+                        <br>
+                    <li class="list-group-item" id="offerModel">
+                    </li>
+                        <br>
+                    <li class="list-group-item" id="offerMSRP">
+                    </li>
+                </ul>
+                <button id="offer-vehicle-det-btn"class="btn btn-primary" data-toggle="collapse"
+            data-target="#offer-vehicle-detail" aria-expanded="false" aria-controls="offer-vehicle-detail">Vehicle Details</button>
+            <div class="collapse border border-primary rounded " id="offer-vehicle-detail">
+                    <div class="card" id="offer-vehicle-det-card">
+                    </div>  
+            </div>
+                    <br>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+   </div> 
+    <br>
+    <div class="card">
+        <div class="card-body col-sm-6" id="paymentDetails">
+          <h5 class="card-title">Request Terms </h5>
+        </div>
+        <div class="hidden" id="monthly-payment"> 
+            <label for="monthly-payment">Enter Your Monthly Payment $</label>                       
+            <input  id="monthly-payment-input"  type ="number" name="monthly-payment" value="0"  min="0"  max="2500000" step="1"   >
+        </div>
+        <div class="hidden" id="total-payment"> 
+          <label for="total-payment">Enter Total Selling Price $</label>                       
+          <input id="total-payment-input"  type ="number" name="total-payment"  value="0" step="1"   >
+      </div>
+    </div>   
+<br>
+<div id="offer-div" class="container hidden">
+  <button id="offer_select"class="btn btn-primary" data-toggle="collapse"
+  data-target="#offer-div" aria-expanded="false" aria-controls="offer-div">Competing Offers</button>
+  <div class="collapse border border-primary rounded " id="offer-div">
+          <table class="table bootstrap-table bootstrap4" id="offer-table">   
+              </table>  
+  </div>
+</div> 
+<br> 
+<div id="inv-div" class="container">
+  <button id="inv_select"class="btn btn-primary" data-toggle="collapse"
+  data-target="#dealer-inv" aria-expanded="false" aria-controls="dealer-inv">View Inventory</button>
+  <div class="collapse border border-primary rounded" id="dealer-inv">
+          <table class="table bootstrap-table bootstrap4" id="dealer-inv-table">   
+              </table>  
+  </div>
+</div> 
+<br>
+<br>
+<div class="btn-toolbar">
+  <button id="submit-offer" class="btn btn-primary" >SUBMIT</button>
+</div>
+
+    <form action="/offers" method="POST" id="new-offer-form" >
+        <input type="text" class="hidden" name="json" id="new-offer-json-input"/>  
+    </form>
+
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">ERROR</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p id="errorMessage"></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <div class="modal " id="reviewModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content form-elegant ">
+            <div class="modal-header text-center d-block">
+              <h5 class="modal-title text-center ">Review Payment Details</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" id="offerModal-body">
+              </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Edit</button>
+              <button type="button" class="btn btn-primary" id="send-offer-btn">SEND</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+</div>
+

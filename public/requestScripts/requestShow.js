@@ -30,7 +30,7 @@ $.getJSON(jsonRequestUrl, function(data){
       case 'Dealer':
         $("#cancel_request_btn").hide()
           displayAdditionalBuyerInfo();
-          // getDealerInfo();
+          getDealerInfo();
           break;  
     };
 });
