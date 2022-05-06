@@ -1,7 +1,6 @@
 $(document).ready(function() {
 
     //Initiate global variables 
-
     var requestVehicleJSON = {};
     var offerVehicleJSON ={};
     //Get user ID
@@ -35,13 +34,12 @@ $(document).ready(function() {
                 requestVehicleJSON = request[0].request.vehicle;
                 //Assign value to the global varible for the offer vehicle
                 offerVehicleJSON = offerVehicle[0].vehicle;
-
                 //Call helper function to load basic & detail data for req vehicle & offer vehicle
-                displayVehicleInfo("request", requestVehicleJSON );
+                displayVehicleInfo("request", requestVehicleJSON);
+                console.log(requestVehicleJSON)
                 displayVehicleInfo("offer", offerVehicleJSON);
-
+                //Display Request info
                 displayRequestDetails(request[0].request); 
-
                 //Display Offer vehicle base info
                 // displayOfferVehicle(offerVehicleJSON);
                 //Assign value for data object to retrieve ALL offers for specified Request
@@ -82,7 +80,9 @@ function getModelData(card, vehicle){
     var trimData = modelData.data.trim.choices.filter(trim =>
                 trim.serial === vehicle.details[0]);
     //Add trim name details card
-    $("#trim").append(trimData[0].name);
+    $("#"+card+"-trim").append(trimData[0].name);
+    //Add vehicle details to each card (request & offer vehicle)
+    loadVehicleDetails(card,vehicle,modelData);
   })
 };
 
@@ -107,29 +107,33 @@ function getModelData(card, vehicle){
                   $("#"+card+"-"+value.name).find('strong').text(value.label+': ')
                   break;
           } 
-          // loadDetailData(value);
       }); 
   };
 
-        //Helper function to load the details data to the template
-        function loadDetailData(optionValue){
+        //Helper function to load vehicle details data into template
+        function loadVehicleDetails(card, vehicle, modelData){
+          $.each(modelData.data.options, function(index, optionValue){
           //Iterate through the details array, excluding the first property, since this is always the vehicle 'trim'
-            $.each(requestJSON.vehicle.details.slice(1), function(index, value){
+            $.each(vehicle.details.slice(1), function(index, value){
               //Iterate through the choices possible for the option group
               $.each(optionValue.choices, function(index, choice){
                   //Check if the choice serial matches the serial from the details array
                   if(choice.serial === value){
                       switch (optionValue.type){
                           case 'Single':
-                              $("#"+optionValue.name).append(choice.name);
+                              $("#"+card+"-"+optionValue.name).append(choice.name);
                               break;
                           case 'Multiple':
-                              $("#"+optionValue.name).find('ul').append('<li class="list-group-item">'+choice.name+'</li>');
+                              $("#"+card+"-"+optionValue.name).find('ul').append('<li class="list-group-item">'+choice.name+'</li>');
                       }
                   }                    
               })
             });
-      };
+          })
+        };
+
+
+  
 
 
 //Helper function to build the request detail card
