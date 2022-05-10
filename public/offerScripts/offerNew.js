@@ -1,3 +1,5 @@
+
+
 $(document).ready(function() {
 
     //Initiate global variables 
@@ -15,7 +17,7 @@ $(document).ready(function() {
     var offerVehicleID = $("#offerVehicle").attr("data-value");
     //Create URL for Offers index json
     var jsonOffersUrl = "/offers/index/json";
-    //Create array of vehicles being offered in each competing Offer
+    //Create array of vehicles from inventory of the current dealer being offered in each competing Offer
     var otherVehiclesInOffers = [];
     //Initiate object which must be passed to offers index query
     var indexObj = {};
@@ -36,27 +38,25 @@ $(document).ready(function() {
                 offerVehicleJSON = offerVehicle[0].vehicle;
                 //Call helper function to load basic & detail data for req vehicle & offer vehicle
                 displayVehicleInfo("request", requestVehicleJSON);
-                console.log(requestVehicleJSON)
                 displayVehicleInfo("offer", offerVehicleJSON);
                 //Display Request info
                 displayRequestDetails(request[0].request); 
-                //Display Offer vehicle base info
-                // displayOfferVehicle(offerVehicleJSON);
                 //Assign value for data object to retrieve ALL offers for specified Request
                 indexObj= {context:'Request', request:requestID};
                 //Get all Competing Offers for the Offer being viewed
                 $.getJSON(jsonOffersUrl, indexObj, function(allOffers){
+                        console.log(allOffers)
                         //Create table for Competing Offers
-                        // createCompeteOfferTable(allOffers.offerJSON);
-                        //Call function that updates the therVehiclesInOffers array
-                        // getOtherVehiclesInOffers(allOffers.offerJSON);
+                        createCompeteOfferTable(allOffers.offerJSON);
+                        //Call function that updates the otherVehiclesInOffers array
+                        getOtherVehiclesInOffers(allOffers.offerJSON);
                     }).done(function(data){
                         //Get dealer info & create inventory table
-                        // getDealerInfo();
+                        getDealerInfo();
                     })
     });
 
-//Helper function to display vehicle info
+//Helper function to display vehicle  basic info
 function displayVehicleInfo(card, vehicle){
   //Display vehicle Base Info
   $("#"+card+"Make").text("Make: "+vehicle.make);
@@ -75,16 +75,24 @@ function getModelData(card, vehicle){
  //Retrieve from src folder, the model data
   $.getJSON(jsonUrlModelData, function(data){
     modelData = data;
+    //Display the vehicle trim
+    displayModelTrim(card, modelData, vehicle);
+    //Create a detail template
     createDetailTemplate(card, modelData);
-    //Get trim data
+    //Add vehicle details info to the specified card (request & offer vehicle)
+    loadVehicleDetails(card,vehicle,modelData);
+  });
+};
+
+   //Helper function to display model trim inside the specified card
+   function displayModelTrim(card, modelData, vehicle){
     var trimData = modelData.data.trim.choices.filter(trim =>
                 trim.serial === vehicle.details[0]);
-    //Add trim name details card
-    $("#"+card+"-trim").append(trimData[0].name);
-    //Add vehicle details to each card (request & offer vehicle)
-    loadVehicleDetails(card,vehicle,modelData);
-  })
-};
+    var trimLi = '<li class="list-group-item" id="'+card+'-trim"><strong>Trim: </strong>'+trimData[0].name+'</li>';
+    //Replace trim li with 
+    $("#"+card+"-trim").replaceWith(trimLi).text(trimData[0].name);
+   };
+
 
     //Helper function to create template in details card
     function createDetailTemplate(card, modelData){
@@ -94,6 +102,10 @@ function getModelData(card, vehicle){
                               '<ul class="list-group">'+
                                   '</ul>'+
                               '</li>';
+                          
+      //Reset template
+      $("#"+card+"-ul").children().not(':first').remove(); 
+      //Iterate through the model data group of options                       
       $.each(modelData.data.options, function(index, value){
           switch (value.type) {
               case "Single":
@@ -122,6 +134,7 @@ function getModelData(card, vehicle){
                       switch (optionValue.type){
                           case 'Single':
                               $("#"+card+"-"+optionValue.name).append(choice.name);
+                              // $("#"+card+"-"+optionValue.name).text(choice.name);
                               break;
                           case 'Multiple':
                               $("#"+card+"-"+optionValue.name).find('ul').append('<li class="list-group-item">'+choice.name+'</li>');
@@ -198,7 +211,7 @@ function displayRequestDetails(request){
             if(value.dealer === userID){
                 //Get the vehicle ID
                 var vehicleInOffer = value.dealerVehicle._id;
-                //Get the offer ID
+                //Get the offer ID, and abbrieviate
                 var offerID = value._id.slice(value._id.length - 7);
                 var offerInfo = {vehicle:vehicleInOffer, offer:offerID}
                 //Add this Offer info to the array of otherVehicleOffers
@@ -216,7 +229,7 @@ function displayRequestDetails(request){
             //Get the request ID
             $("#offer_select").on('click', function(){
               //Create url to get all offers for this request
-              var jsonUrl = "/offers/index/json";
+              // var jsonUrl = "/offers/index/json";
               //Build table of request offers
               table = $('#offer-table').DataTable({
                     destroy: true,
@@ -257,7 +270,7 @@ function displayRequestDetails(request){
                     },
                     order: [[ 4, 'asc' ]],
                     oLanguage: {
-                      "sEmptyTable": "Sorry,there are no Offers yet for this Request"
+                      "sEmptyTable": "Sorry,there are no Competing Offers yet for this Request"
                   },
                   buttons: [
                     {
@@ -369,8 +382,12 @@ function displayRequestDetails(request){
                                         $.getJSON("/vehicles/json/"+dealerVehicle, function(newVehicle){
                                             //Reassign  new value to the global variable for the offer vehicle
                                             offerVehicleJSON = newVehicle.vehicle;
+                                            //Call helper function to display the new offer vehicle basic info
+                                            displayVehicleInfo("offer", offerVehicleJSON);
+                                            //Call helper function to display the new offer vehicle details
+                                            getModelData("offer",offerVehicleJSON);
                                             //Call helper function to display the new vehicle chosen
-                                            displayOfferVehicle(newVehicle.vehicle);
+                                            // displayOfferVehicle(newVehicle.vehicle);
                                             //Call function to update the vehicle inventory after vehicle is changed
                                             getDealerInfo();
                                             //Reset the payment variables

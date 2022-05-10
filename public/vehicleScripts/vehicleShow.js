@@ -93,11 +93,12 @@ $(document).ready(function() {
                         switch (optionValue.type){
                             case 'Single':
                                 $("#"+optionValue.name).append(choice.name);
+                                console.log(choice)
                                 break;
                             case 'Multiple':
                                 $("#"+optionValue.name).find('ul').append('<li class="list-group-item">'+choice.name+'</li>');
                         }
-                    }                    
+                    }                     
                 })
               });
         };
