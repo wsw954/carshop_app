@@ -89,12 +89,12 @@
           <h5 class="card-title">Request Terms </h5>
         </div>
         <div class="hidden" id="monthly-payment"> 
-            <label for="monthly-payment">Enter Your Monthly Payment $</label>                       
-            <input  id="monthly-payment-input"  type ="number" name="monthly-payment" value="0"  min="0"  max="2500000" step="1"   >
+            <label for="monthly-payment">Monthly Payment $</label>                       
+            <input  id="monthly-payment-input"  type="number" name="monthly-payment"  placeholder="enter payment" min="1"  max="2500000" step="1" >
         </div>
         <div class="hidden" id="total-payment"> 
-          <label for="total-payment">Enter Total Selling Price $</label>                       
-          <input id="total-payment-input"  type ="number" name="total-payment"  value="0" step="1"   >
+          <label for="total-payment">Total Selling Price $</label>                       
+          <input  id="total-payment-input"  type="number" name="total-payment" placeholder="enter payment"  step="1"    >
       </div>
     </div>   
 <br>
@@ -130,7 +130,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">ERROR</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -138,7 +138,7 @@
               <p id="errorMessage"></p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
@@ -149,14 +149,14 @@
           <div class="modal-content form-elegant ">
             <div class="modal-header text-center d-block">
               <h5 class="modal-title text-center ">Review Payment Details</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body" id="offerModal-body">
               </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Edit</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Edit</button>
               <button type="button" class="btn btn-primary" id="send-offer-btn">SEND</button>
             </div>
           </div>

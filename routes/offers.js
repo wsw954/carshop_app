@@ -181,7 +181,7 @@ router.get("/offers/json/:id", middleware.isUserLoggedIn, function(req, res){
 
 
 //Retrieve json of index of offers docs, from db using variables and filters
-router.get("/offers/index/json", middleware.isUserLoggedIn, function(req, res){
+router.get("/offers/index/json", middleware.isUserLoggedIn, function(req, res){ 
     if(req.xhr){
         switch (req.query.context){
             case 'Dealer':
@@ -304,7 +304,7 @@ router.get("/offers/index/json", middleware.isUserLoggedIn, function(req, res){
                                      filteredArray = docs.filter(function(result){
                                                         return (result.dealerVehicle.make === filterVar.make )
                                                             });
-                                res.json({offerJSON:filteredArray})
+                                res.json({offerJSON:filteredArray});
                                 break;
                                 //Case [10], 1 Filter used (Status)
                                 case filterVar.make === 'false' &&

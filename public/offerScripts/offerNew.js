@@ -1,5 +1,3 @@
-
-
 $(document).ready(function() {
 
     //Initiate global variables 
@@ -31,7 +29,7 @@ $(document).ready(function() {
         $.getJSON("/vehicles/json/"+offerVehicleID)
             ).done(function(request, offerVehicle) {
                 //Assign value to global variable for requestJSON
-                requestJSON = request;
+                requestJSON = request[0].request;
                 //Assign the value to global variable for the request vehicle
                 requestVehicleJSON = request[0].request.vehicle;
                 //Assign value to the global varible for the offer vehicle
@@ -45,7 +43,6 @@ $(document).ready(function() {
                 indexObj= {context:'Request', request:requestID};
                 //Get all Competing Offers for the Offer being viewed
                 $.getJSON(jsonOffersUrl, indexObj, function(allOffers){
-                        console.log(allOffers)
                         //Create table for Competing Offers
                         createCompeteOfferTable(allOffers.offerJSON);
                         //Call function that updates the otherVehiclesInOffers array
@@ -60,9 +57,9 @@ $(document).ready(function() {
 function displayVehicleInfo(card, vehicle){
   //Display vehicle Base Info
   $("#"+card+"Make").text("Make: "+vehicle.make);
-  $("#"+card+"Model").text("Make: "+vehicle.model);;
-  $("#"+card+"Year").text("Make: "+vehicle.year);
-  $("#"+card+"MSRP").text("Make: "+vehicle.msrp);
+  $("#"+card+"Model").text("Model: "+vehicle.model);;
+  $("#"+card+"Year").text("Year: "+vehicle.year);
+  $("#"+card+"MSRP").text("MSRP: "+vehicle.msrp);
   getModelData(card,vehicle);
 };   
 
@@ -188,22 +185,7 @@ function displayRequestDetails(request){
 };
 
 
-    //Helper function to display Offer Vehicle
-    function displayOfferVehicle(vehicle){
-        $("#offerMake").text("Make: "+vehicle.make);
-            $("#offerModel").text("Model: "+vehicle.model);
-            $("#offerMSRP").text("MSRP: $"+vehicle.msrp);
-                //Check if the offer vehicle is same model as request vehicle
-                if(offerVehicleJSON.model != requestVehicleJSON.model){
-                    var offerMake = vehicle.make.toLowerCase();
-                    var offerModel= vehicle.model.toLowerCase();
-                    $("#offerVehicleDetails").empty();
-                    //Append the relevant model script file to the html file
-                    $("body").append($('<script></script>').attr({"id":vehicle.model,"type": "text/javascript", "src": "/"+offerMake+"/"+offerModel+"Show.js"}));
-                    };  
-            };
-
-    
+  
     //Helper function to create array of the vehicles in competing Offers
     function getOtherVehiclesInOffers(offers){
         $.each(offers, function(index, value){
@@ -386,22 +368,8 @@ function displayRequestDetails(request){
                                             displayVehicleInfo("offer", offerVehicleJSON);
                                             //Call helper function to display the new offer vehicle details
                                             getModelData("offer",offerVehicleJSON);
-                                            //Call helper function to display the new vehicle chosen
-                                            // displayOfferVehicle(newVehicle.vehicle);
                                             //Call function to update the vehicle inventory after vehicle is changed
                                             getDealerInfo();
-                                            //Reset the payment variables
-                                            switch (requestJSON.purchaseType) {
-                                                case 'Cash':
-                                                    $('input[id="total-payment-input"]').val(newVehicle.vehicle.msrp);
-                                                break;
-                                                case 'Finance':
-                                                    $('input[id="monthly-payment-input"]').val(0);    
-                                                break;  
-                                                case'Lease':
-                                                    $('input[id="monthly-payment-input"]').val(0);
-                                                break;
-                                            }
                                         });
                                         //Unselect vehicle checkbox
                                         invTable.rows('.selected').deselect();      
@@ -476,24 +444,26 @@ $("#submit-offer").click(function(e){
 function reviewModalMessage(purchaseType){
     switch(purchaseType){
       case 'Cash':
-        var dealerMSRP = $('li[id="dealerMSRP"]').attr('data-msrp');
-        var totaSellingPrice = $('input[id="total-payment-input"]').val();
+        var totaSellingPrice = parseInt($('input[id="total-payment-input"]').val());
         $('div[id="offerModal-body"]').empty();
-        $('div[id="offerModal-body"]').append($('<p>', {'text':"Dealer MSRP: $"+dealerMSRP}));
+        $('div[id="offerModal-body"]').append($('<p>', {'text':"Dealer MSRP: $"+offerVehicleJSON.msrp}));
         $('div[id="offerModal-body"]').append($('<p>', {'text':"Dealer Total Selling Price: $"+totaSellingPrice}));
         $("#reviewModal").modal('show');
         break;
       case 'Finance':
-        var downPayment = $('li[id="down-pymt-li"]').attr('data-value');
-        var numberOfMonths =  $('li[id="no-mths-li"]').attr('data-value');
-        var monthlyPayment = $('input[id="monthly-payment-input"]').val();
+        console.log(requestJSON)
+        // var downPayment = $('li[id="down-pymt-li"]').attr('data-value');
+
+        // var numberOfMonths =  $('li[id="no-mths-li"]').attr('data-value');
+        var monthlyPayment = parseInt($('input[id="monthly-payment-input"]').val());
         $('div[id="offerModal-body"]').empty();
-        $('div[id="offerModal-body"]').append($('<p>', {'text':"Down Payment: $"+downPayment}));
-        $('div[id="offerModal-body"]').append($('<p>', {'text':"Number of Months:"+numberOfMonths}));
+        $('div[id="offerModal-body"]').append($('<p>', {'text':"Down Payment: $"+requestJSON.downPayment}));
+        $('div[id="offerModal-body"]').append($('<p>', {'text':"Number of Months:"+requestJSON.numberOfMonths}));
         $('div[id="offerModal-body"]').append($('<p>', {'text':"Monthly Payment: $"+monthlyPayment}));
         $("#reviewModal").modal('show');
         break;
       case 'Lease':
+        console.log(requestJSON)
         var downPayment = $('li[id="down-pymt-li"]').attr('data-value');
         var leaseTerm =  $('li[id="lease-term-li"]').attr('data-value');
         var annualMileage =  $('li[id="annual-mileage-li"]').attr('data-value');
