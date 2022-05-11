@@ -38,25 +38,16 @@ var otherVehiclesInOffers = [];
                 //Get all Competing Offers for the Offer being viewed
                 $.getJSON(jsonCompeteOffersUrl, indexObj, function(competeOffers){
                     //Call function that updates the vehiclesInOffers
-                    // getOtherVehiclesInOffers(competeOffers.offerJSON);
+                    getOtherVehiclesInOffers(competeOffers.offerJSON);
                     //Create table for Other Offers (Competing Offers)
-                    // createCompeteOfferTable(competeOffers.offerJSON);
+                    createCompeteOfferTable(competeOffers.offerJSON);
                     //Check for type of User
                     switch (userKind) {
                         case 'Buyer':
-                    //Hide the dealerName li from Buyer
-                    $('li[id=dealerName').hide();
-                    //Call function to allow buyer to Accept Offer  
-                        // displayAcceptOffer();
+                        buyerView();
                         break;
                         case 'Dealer':
-                        if(offerJSON.offer.status === 'Active'){
-                            $("#inv-div").show();
-                            // getDealerInfo();
-                            if(offerJSON.offer.dealer === userID){
-                                // displayEditOffer();
-                                    } 
-                                }
+                        dealerView();
                         break;  
                     };
                 })
@@ -203,8 +194,276 @@ function getModelData(card, vehicle){
     };
 
 
+//Helper function
+function getOtherVehiclesInOffers(offers){
+    $.each(offers, function(index, value){
+        //If this dealer has another Offer in this list of competing Offers ;
+        if(value.dealer === userID){
+            //Get the vehicle ID
+            var vehicleInOffer = value.dealerVehicle._id;
+            //Get the offer ID
+            var offerID = value._id.slice(value._id.length - 7);
+            var offerInfo = {vehicle:vehicleInOffer, offer:offerID}
+            //Add this Offer info to the array of otherVehicleOffers
+            otherVehiclesInOffers.push(offerInfo);
+        }
+    })
+};
 
 
+    //Add table to display other (competing)  Offers to the Offer being displayed
+    function createCompeteOfferTable(data){
+        $("#offer-div").show();
+        //Create Offer Table on Competing Offers btn
+        $("#offer_competing").on('click', function(){
+        //Build table of offers for the request 
+        table = $('#offer-table').DataTable({
+                    destroy: true,
+                    dom: 'Bfrtip',
+                    //Pass array of vehicle objects  
+                    data: data,
+                  //set up table columns
+                  columns: [
+                    {"data": null, defaultContent: ""},
+                    {"data": "_id", title: "Offer ID",
+                        "render":function(data){
+                          return data.slice(data.length - 7)
+                        }},
+                    {"data":"dealer", title:"Dealer",
+                      "render":function(data){
+                        if(data === userID){
+                          return dealerName;
+                        } else {
+                          return "Other Dealer"
+                        }
+                      }},
+                    {"data": "dealerVehicle.make", title: "Make"},
+                    {"data": "dealerVehicle.model", title: "Model"},
+                    {"data":"dealerVehicle.msrp", title:"MSRP"},
+                    {"data": "monthlyPayment", title: "Monthly Payment"},
+                    {"data": "totalPayment", title: "Total Payment"},
+                    {"data": "status", title: "Offer Status"}
+                    ],
+                  createdRow: function(row, data, index){
+                      //Add offer ID attr to each row
+                      $(row).attr('id', data._id);  
+                  },      
+                    columnDefs: [ {
+                        orderable: false,
+                        className: 'select-checkbox',
+                        targets:   0, 
+                    } ],
+                    select: {
+                        style:    'os',
+                        selector: 'td:first-child'
+                    },
+                    order: [[ 4, 'asc' ]],
+                    oLanguage: {
+                      "sEmptyTable": "Sorry, there are no Competing Offers for this Request"
+                  },
+                  buttons: [
+                    {
+                        text: 'Select',
+                        action: function () {
+                          //Verify buyer has selected an offer from offer table
+                          if(table.rows( { selected: true } ).data().length === 0){
+                            $("#errorMessage").text("You must select an Offer");
+                            //Show error pop up modal to inform buyer to select an offer
+                            $("#errorModal").modal('show');
+                          } else {
+                            //Get the dealer vehicle ID 
+                            var offerID = table.rows( { selected: true } ).data()[0]._id;
+                            //Render the Offers show view
+                            window.location.href = '/offers/'+offerID
+                          }
+                        }
+                    }
+                ],
+                initComplete: function(){
+                  //This function hides the Dealer Column if the user is a Buyer
+                  var api = this.api();
+                  if (userKind === 'Buyer') {
+                    // Hide Office column
+                    api.column(2).visible( false );
+                  }
+                }
+              })
+            })
+          };  
+
+
+    //Helper function to customize view for buyer
+    function buyerView(){
+        $('li[id=dealerName').hide();
+        $("#edit-offer-btn").hide();
+        //Display Accept btn if user is Buyer & Request is Active   
+        if(offerJSON.offer.request.status === "Active"){
+            $('button[id=offer-accept]').show();
+                addLogicAcceptBtn();
+            }
+        
+
+    }        
+
+    //Helper function to customize view for buyer
+    function dealerView(){  
+        $('button[id=offer-accept]').hide();
+        //Because of clash w/inline style hide the edit offer btn manually here 
+        $('button[id=edit-offer-btn]').hide();
+        if(offerJSON.offer.status === 'Active'){ 
+            $("#inv-div").show();
+            getDealerInfo();
+            console.log(offerJSON.offer.dealer);
+            console.log(userID)
+            if(offerJSON.offer.dealer === userID){
+                    //Add this dealerName to dealer li
+                    $('li[id=dealerName').text("Dealer: "+dealerName); 
+                    //Display the edit offer btn, since this dealer is the owner of Offer being viewed
+                    $('button[id=edit-offer-btn]').show();
+                        addLogicEditBtn(); 
+                    } 
+                }
+        };      
+
+
+   //Helper function to add logic to EDIT btn
+   function addLogicEditBtn(){
+    $("#edit-offer-btn").click(function(e){
+        if(offerJSON.offer.status === "Active" ){
+          if(offerJSON.offer.dealer === userID){
+              //Route to offer EDIT view
+              window.location = '/offers/'+offerJSON.offer._id+'/edit'; 
+                } else {
+                  $("#errorMessage").text("Sorry, you are not authorized to EDIT this Offer");
+                  $("#errorModal").modal('show');
+                }
+        } else{
+            $("#errorMessage").text("Sorry, you can only EDIT an Active Offer");
+            $("#errorModal").modal('show');
+        }  
+     });
+   };
+
+
+
+     //Helper function create dealer inventory table
+    //Note, this table adds an extra field "offers", which is an array of offers each vehicle is enrolled into
+    function getDealerInfo(){
+        //Create URL to retrieve index of all dealer Vehicles
+        var jsonVehiclesUrl = "/vehicles/index/json/";
+        //Create URL to retrieve index of all dealer Offers
+        var jsonOffersUrl = "/offers/index/json";
+        //Set default values for filter variables
+        var filter ={make:'false',
+                     model:'false',
+                     state:'false',
+                     status:[]};
+         var dataArray = [];
+         $.when(
+             $.getJSON(jsonVehiclesUrl),
+             $.getJSON(jsonOffersUrl,{context:"Dealer",filter:JSON.stringify(filter) })
+         ).done(function(vehiclesJSON, offersJSON) {
+              //First, filter out from the vehicle inventory, the vehicle currently referenced in Offer being Shown
+              var vehiclesFilteredJSON = vehiclesJSON[0].vehicles.filter(function(result){
+                              return result._id != offerVehicleJSON._id
+                            });
+             //Iterate through list of vehicles add new field (offers), which is a number of offers the vehicle is enrolled in
+             $.each(vehiclesFilteredJSON, function(index, vehicle){
+                 vehicle.offers =[];
+                 $.each(offersJSON[0].offerJSON, function(index,offer){
+                     //If the vehicle is enrolled in offer, then add id to the vehicle.offers array
+                     if(offer.dealerVehicle._id === vehicle._id){
+                         vehicle.offers.push(offer._id)
+                     }
+                 })
+                 dataArray.push(vehicle);        
+             });
+             createDealerInvTable(dataArray);
+         });
+     };
+
+           //Helper function to create table of Dealer's inventory
+           function createDealerInvTable(dataArray){
+            $("#inv-div").show();
+            $("#inv_select").on('click', function(){
+            //Build table of dealer inventory
+            invTable = $('#dealer-inv-table').DataTable({
+                  //Pass array of vehicle objects  
+                  data: dataArray,
+                  autoWidth: false,
+                  destroy: true,
+                  dom: 'Bfrtip',
+    
+                //set up table columns
+                columns: [
+                  {"data": null, defaultContent: ""},
+                  {"data": "make", title: "Make"},
+                  {"data": "model", title: "Model"},
+                  {"data": "msrp", title: "MSRP"},
+                  {"data":"offers.length", title:"Active Offers Vehicle Enrolled"}
+                  ],
+                createdRow: function(row, data, index){
+                    //Add ID attr to each row
+                    $(row).attr('id', data._id);  
+                },      
+                  columnDefs: [ {
+                      orderable: false,
+                      className: 'select-checkbox',
+                      targets:   0, 
+                  } ],
+                  select: {
+                      style:    'os',
+                      selector: 'td:first-child'
+                  },
+                  order: [[ 3, 'asc' ]],
+                  oLanguage: {
+                    "sEmptyTable": "You currently don't have any Vehicles saved to your Inventory"
+                  },
+                  buttons: [
+                    {
+                        text: 'Make Offer',
+                        action: function () {
+                          //Verify dealer has selected a vehicle from inventory
+                          if(invTable.rows( { selected: true } ).data().length === 0){
+                            $("#errorMessage").text("Select a Vehicle to make an Offer");
+                            //Show error pop up modal to inform dealer to select a vehicle
+                            $("#errorModal").modal('show')
+                          } else {
+                                //Get the vehicleID of vehicle selected  
+                                var dealerVehicle = invTable.rows( { selected: true } ).data()[0]._id;
+                                //Check vehicle eligibility
+                                if(checkEligibility(dealerVehicle)){
+                                //Get the dealer vehicle ID 
+                                var dealerVehicle = invTable.rows( { selected: true } ).data()[0]._id;
+                                //Render the offers/new view 
+                                window.location.href = "/offers/new?request_id="+offerJSON.offer.request._id+"&dealer_vehicle="+dealerVehicle 
+                                }else {
+                                    //Unselect the vehicle
+                                    invTable.rows('.selected').deselect();      
+
+                            }
+                          }
+                        }
+                    }
+                ]
+              })
+            });
+          };  
+
+
+        //Helper function to check if Vehicle from Inventory is eligible to be switched in Offer being edited
+        function checkEligibility(newVehicle) {
+            var eligibility = true;
+           $.each(otherVehiclesInOffers, function(index, value){
+               if(value.vehicle === newVehicle){
+                   $("#errorMessage").text("This vehicle is already being offered in your Offer ID#"+value.offer); 
+                   //Show error pop up modal to inform dealer to select a vehicle
+                   $("#errorModal").modal('show');  
+                 eligibility = false
+               } 
+           })
+           return eligibility;
+         };
 
 
 

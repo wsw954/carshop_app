@@ -95,7 +95,10 @@ $(document).ready(function() {
                 //Route to show view for request chosen
                 window.location = jQuery(this).closest('tr').attr('data-href'); 
             }); 
-        },        
+        },
+        oLanguage: {
+            "sEmptyTable": "Sorry, You currently have No Offers"
+        }     
     });           
 };
 

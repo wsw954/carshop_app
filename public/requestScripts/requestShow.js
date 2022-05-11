@@ -1,9 +1,8 @@
-//Set global variable, which will be used by the model specific script file
-var requestJSON = {};
+
 
 $(document).ready(function() {
-
-  //Set global variables for this script file
+  //Set global variables
+  var requestJSON = {};
   var offerTable = {};
   var invTable = {};
   var userID = $("#userID").val();
@@ -20,7 +19,7 @@ $.getJSON(jsonRequestUrl, function(data){
   displayRequestBasicInfo();
   //Call helper function to display vehicle details card
   getModelData();
-  // createOfferTable();
+  createOfferTable();
    //Check for type of User
    switch (userKind) {
       case 'Buyer':
