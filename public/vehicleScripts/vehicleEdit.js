@@ -1,4 +1,4 @@
-//Global variable of all model src data
+//Global variable of all model src dataloadTrim
 var modelJSON = {};
 var vehicleJSON = {};
 //Array to keep track of all currently selected options chosen by user

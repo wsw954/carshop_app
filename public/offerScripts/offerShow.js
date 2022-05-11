@@ -313,8 +313,6 @@ function getOtherVehiclesInOffers(offers){
         if(offerJSON.offer.status === 'Active'){ 
             $("#inv-div").show();
             getDealerInfo();
-            console.log(offerJSON.offer.dealer);
-            console.log(userID)
             if(offerJSON.offer.dealer === userID){
                     //Add this dealerName to dealer li
                     $('li[id=dealerName').text("Dealer: "+dealerName); 
