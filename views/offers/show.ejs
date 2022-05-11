@@ -17,7 +17,7 @@
         <div class="col-sm-6">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Requested Vehicle</h5>
+              <h5 class="card-title">Request Vehicle</h5>
               <div class="container">
                 <ul class="list-group baseInfo">
                     <li class="list-group-item" id="requestMake">
@@ -26,14 +26,22 @@
                     <li class="list-group-item" id="requestModel">
                     </li>
                         <br>
+                    <li class="list-group-item" id="requestYear">
+                      </li>
+                        <br>     
                     <li class="list-group-item" id="requestMSRP">
                     </li>
                 </ul>
-                <button id="request-vehicle-det-btn"class="btn btn-primary" data-toggle="collapse"
-            data-target="#request-vehicle-det-div" aria-expanded="false" aria-controls="request-vehicle-det-div">Vehicle Details</button>
-            <div class="collapse border border-primary rounded " id="request-vehicle-det-div">
-                    <div class="card" id="request-vehicle-det-card">
-                    </div>  
+                <button id="request-vehicle-det-btn"class="btn btn-primary" data-bs-toggle="collapse"
+                data-bs-target="#req-vehicle-div" aria-expanded="false" aria-controls="req-vehicle-div">Vehicle Details</button>
+            <div class="collapse border border-primary rounded " id="req-vehicle-div">
+              <div class="card" id="request-vehicle-det-card">
+                <ul class="list-group" id="request-ul">
+                  <li class="list-group-item" id="request-trim" >
+                    <strong>Trim:</strong>
+                  </li>
+                </ul>
+                </div> 
             </div>
                     <br>
                 </div>
@@ -52,15 +60,23 @@
                     <li class="list-group-item" id="offerModel">
                     </li>
                         <br>
+                    <li class="list-group-item" id="offerYear">
+                      </li>
+                        <br>    
                     <li class="list-group-item" id="offerMSRP">
                     </li>
                 </ul>
-                <button id="offer-vehicle-det-btn"class="btn btn-primary" data-toggle="collapse"
-            data-target="#offer-vehicle-det-div" aria-expanded="false" aria-controls="offer-vehicle-det-div">Vehicle Details</button>
-            <div class="collapse border border-primary rounded " id="offer-vehicle-det-div">
-                    <div class="card" id="offer-vehicle-det-card">
-                    </div>  
-            </div>
+                <button id="offer-vehicle-det-btn"class="btn btn-primary" data-bs-toggle="collapse"
+            data-bs-target="#offer-vehicle-div" aria-expanded="false" aria-controls="offer-vehicle-div">Vehicle Details</button>
+            <div class="collapse border border-primary rounded " id="offer-vehicle-div">
+              <div class="card" id="offer-vehicle-det-card">
+                <ul class="list-group" id="offer-ul">
+                  <li class="list-group-item" id="offer-trim" >
+                    <strong>Trim:</strong>
+                  </li>
+                </ul>
+                </div> 
+             </div>
                     <br>
                 </div>
             </div>
@@ -163,7 +179,8 @@
       </div>
 
 
-
+<!--This is Ajax script   -->
+<script type="text/javascript"  src="/offerScripts/offerShow.js"></script>  
 
 
 </div>
