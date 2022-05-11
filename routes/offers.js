@@ -106,7 +106,7 @@ router.put("/offers/:id", middleware.checkOfferOwnership, function(req, res, nex
                     if(err){
                         console.log(err);            
                     } else {
-                        res.redirect('/offers');   
+                        res.redirect('/offers/'+req.params.id);   
                     }
                 }); 
             break;

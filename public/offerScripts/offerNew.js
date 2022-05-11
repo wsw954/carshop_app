@@ -348,7 +348,7 @@ function displayRequestDetails(request){
                   },
                   buttons: [
                     {
-                        text: 'Change Vehicle in Offer',
+                        text: 'Change Vehicle',
                         action: function () {
                            //Verify dealer has selected a vehicle from inventory
                             if(invTable.rows( { selected: true } ).data().length === 0){
@@ -496,7 +496,11 @@ function getOfferDetails(){
   var dealer = $("#dealerID").attr('data-value');
   var dealerVehicle = offerVehicleJSON._id;
   var request = $("#requestID").attr('data-value');
-  var monthlyPayment = parseInt($('input[id="monthly-payment-input"]').val());
+  var monthlyPayment = 0;
+  if(requestJSON.purchaseType != 'Cash'){
+    monthlyPayment = parseInt($('input[id="monthly-payment-input"]').val())
+  }
+
   var totalPayment = getTotalPymt();
   var offerObject = {
                       dealer:dealer,

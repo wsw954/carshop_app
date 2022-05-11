@@ -431,10 +431,21 @@ function getOtherVehiclesInOffers(offers){
                                 var dealerVehicle = invTable.rows( { selected: true } ).data()[0]._id;
                                 //Check vehicle eligibility
                                 if(checkEligibility(dealerVehicle)){
-                                //Get the dealer vehicle ID 
-                                var dealerVehicle = invTable.rows( { selected: true } ).data()[0]._id;
-                                //Render the offers/new view 
-                                window.location.href = "/offers/new?request_id="+offerJSON.offer.request._id+"&dealer_vehicle="+dealerVehicle 
+                                        //Get vehicle JSON
+                                        $.getJSON("/vehicles/json/"+dealerVehicle, function(newVehicle){
+                                            //Reassign  new value to the global variable for the offer vehicle
+                                            offerVehicleJSON = newVehicle.vehicle;
+                                            //Call helper function to display the new offer vehicle basic info
+                                            displayVehicleInfo("offer", offerVehicleJSON);
+                                            //Call helper function to display the new offer vehicle details
+                                            getModelData("offer",offerVehicleJSON);
+                                            //Call function to update the vehicle inventory after vehicle is changed
+                                            getDealerInfo();
+                                        });
+                                        //Unselect vehicle checkbox
+                                        invTable.rows('.selected').deselect();      
+                                        //Close the dealer inv table
+                                        $('#dealer-inv').on('.collapse.show').collapse('hide');
                                 }else {
                                     //Unselect the vehicle
                                     invTable.rows('.selected').deselect();      
@@ -465,7 +476,133 @@ function getOtherVehiclesInOffers(offers){
 
 
 
+    //Handle the save changes btn 
+    $("#save-changes").click(function(e){
+        e.preventDefault;
+        var purchaseType = $('li[id="purchase-type-li"]').attr('data-type');
+        var totalPayment = parseInt($('input[id="total-payment-input"]').val());
+        var monthlyPayment = parseInt($('input[id="monthly-payment-input"]').val());
+            switch (offerJSON.offer.request.purchaseType){
+                case 'Cash':
+                    if(totalPayment <= 0 || $('input[id="total-payment-input"]').val().length === 0){
+                        $("#errorMessage").text("Please enter a valid amount for Total Selling Price");
+                        $("#errorModal").modal('show');
+                    } else {
+                        reviewModalMessage(purchaseType);
+                    };
+                    break;
+                case 'Finance':
+                    if(monthlyPayment <= 0 || $('input[id="monthly-payment-input"]').val().length === 0){
+                        $("#errorMessage").text("Please enter a valid amount for Monthly Payment");
+                        $("#errorModal").modal('show');
+                    } else {
+                        reviewModalMessage(purchaseType);
+                    }
+                    break;
+                case 'Lease':
+                    if(monthlyPayment <= 0 || $('input[id="monthly-payment-input"]').val().length === 0){
+                        $("#errorMessage").text("Amount Monthly Payment is Invalid");
+                        $("#errorModal").modal('show');
+                    } else {
+                        reviewModalMessage(purchaseType);
+                    }
+                    break;
+                  } 
+            });    
 
+
+       //Helper function to create modal body with info for review
+       function reviewModalMessage(purchaseType){
+        switch(purchaseType){
+        case 'Cash':
+            var dealerMSRP = offerVehicleJSON.msrp;
+            var totaSellingPrice = $('input[id="total-payment-input"]').val();
+            $('div[id="offerModal-body"]').empty();
+            $('div[id="offerModal-body"]').append($('<p>', {'text':"Offer Vehicle MSRP: $"+dealerMSRP}));
+            $('div[id="offerModal-body"]').append($('<p>', {'text':"Offer Total Selling Price: $"+totaSellingPrice}));
+            $("#reviewModal").modal('show');
+            break;
+        case 'Finance':
+            var downPayment = $('li[id="down-pymt-li"]').attr('data-value');
+            var numberOfMonths =  $('li[id="no-mths-li"]').attr('data-value');
+            var monthlyPayment = $('input[id="monthly-payment-input"]').val();
+            $('div[id="offerModal-body"]').empty();
+            $('div[id="offerModal-body"]').append($('<p>', {'text':"Down Payment: $"+downPayment}));
+            $('div[id="offerModal-body"]').append($('<p>', {'text':"Number of Months:"+numberOfMonths}));
+            $('div[id="offerModal-body"]').append($('<p>', {'text':"Monthly Payment: $"+monthlyPayment}));
+            $("#reviewModal").modal('show');
+            break;
+        case 'Lease':
+            var downPayment = $('li[id="down-pymt-li"]').attr('data-value');
+            var leaseTerm =  $('li[id="lease-term-li"]').attr('data-value');
+            var annualMileage =  $('li[id="annual-mileage-li"]').attr('data-value');
+            var monthlyPayment = $('input[id="monthly-payment-input"]').val();
+            $('div[id="offerModal-body"]').empty();
+            $('div[id="offerModal-body"]').append($('<p>', {'text':"Down Payment: $"+downPayment}));
+            $('div[id="offerModal-body"]').append($('<p>', {'text':"Lease Term (Months):"+leaseTerm}));
+            $('div[id="offerModal-body"]').append($('<p>', {'text':"Annual Mileage: "+annualMileage}));
+            $('div[id="offerModal-body"]').append($('<p>', {'text':"Monthly Payment: $"+monthlyPayment}));
+            $("#reviewModal").modal('show');        
+            break;
+        };
+    };            
+
+
+        //Handle the SEND offer command
+        $("#save-offer-btn").on('click', function(e){
+            e.preventDefault;
+            saveOffer();   
+        });
+
+        //Helper function to SAVE offer
+        function saveOffer(){
+            var offerObject =  getOfferDetails();
+            var json = {action:"Edit", offer:offerObject};
+            $('#edit-offer-json-input').val(JSON.stringify(json));
+            $('#edit-offer-form').submit();
+        };
+        
+
+    //Helper function
+    function getOfferDetails(){
+        //Since only 3 items can be edited, the json created only has these 3 items
+        var dealerVehicle = offerVehicleJSON._id;
+        var monthlyPayment = 0;
+        if(offerJSON.offer.request.purchaseType != 'Cash'){
+            monthlyPayment = parseInt($('input[id="monthly-payment-input"]').val())
+        }
+        var totalPayment = getTotalPymt();
+        var offerObject = {
+                            dealerVehicle:dealerVehicle,
+                            monthlyPayment:monthlyPayment,
+                            totalPayment:totalPayment
+                            };
+        return offerObject;
+  };
+
+    //Helper function
+    function getTotalPymt(){
+        var purchaseType = $('li[id="purchase-type-li"]').attr('data-type');
+        var totalPayment = 0;
+        switch(purchaseType){
+        case 'Cash':
+        totalPayment =  $('input[id="total-payment-input"]').val();
+            return totalPayment;
+        case 'Finance':
+            var months = parseInt($('li[id="no-mths-li"]').attr('data-value'))
+            var monthlyPayment = parseInt($('input[id="monthly-payment-input"]').val());
+            var downPayment = parseInt($('li[id="down-pymt-li"]').attr('data-value'));
+            totalPayment =months*monthlyPayment+(downPayment);
+            return totalPayment;
+        case 'Lease':
+            var leaseTerm = parseInt($('li[id="lease-term-li"]').attr('data-value'))
+            var monthlyPayment = parseInt($('input[id="monthly-payment-input"]').val());
+            var downPayment = parseInt($('li[id="down-pymt-li"]').attr('data-value'));
+            totalPayment = leaseTerm*monthlyPayment+(downPayment);
+            return totalPayment;
+            break;
+        } 
+    };
 
 
 
