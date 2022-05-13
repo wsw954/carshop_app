@@ -64,37 +64,79 @@ $(document).ready(function() {
         ],
     //set up table columns
     columns: [
-        {"data": "_id", title: "ID"},
+        {"data": "_id", title: "Request ID",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+            //Add underline to cell ID
+               $(nTd).hover(function(){
+                $(this).css("text-decoration", "underline")
+               }, function(){
+                $(this).css("text-decoration", "none");
+            })
+            //Add data-href to the ID cell, for requests/show url   
+            $(nTd).attr('data-href', "/requests/"+oData._id);
+            //Attach click listener to each
+            $(nTd).on("click", function() {
+                //Route to show view for vehicle chosen
+               window.location = $(this).attr('data-href'); 
+            })
+        } 
+    },
         {"data": "vehicle.make", title: "Make"},
         {"data": "vehicle.model", title: "Model"},
         {"data": "vehicle.msrp", title: "MSRP"},
         {"data": "purchaseType", title: "Purchase Type"},
         {"data": "status", title: "Status"},
-        {"data":"offers.length",title:"Offers"}
+        {"data":"offers.length",title:"Offers"},
+        {
+            "data": null,
+            "className": "dt-center editor-edit",
+            "defaultContent": '<i class="fas fa-pencil-alt"/>',
+            "orderable": false,
+            fnCreatedCell:function (nTd, sData, oData, iRow, iCol){
+                $(nTd).on("click", function() {
+                        //Route to show view for vehicle chosen
+                        window.location = "/requests/"+oData._id; 
+                        });
+                        }
+        },
+        {
+            "data": null,
+            "className": "dt-center editor-delete",
+            "defaultContent": '<i class="fa fa-trash"/>',
+            "orderable": false,
+            fnCreatedCell:function (nTd, sData, oData, iRow, iCol){
+                $(nTd).on("click", function() {
+                        //Verify if the selected Requests has a pending Active Offer 
+                        if(oData.offers.length > 0){
+                            $("#errorMessage").text("You cannot delete a requests which is currently has a pending Active Offer")
+                            $("#errorModal").modal('show'); 
+                        }
+                         else {
+                            //Add delete form action
+                            $("#delete-request-form").attr('action', '/requests/'+ oData._id+"?_method=DELETE");
+                            //Display the confirm delete modal
+                            $("#deleteModal").modal('show');
+                                };
+                            });
+                        }
+                    }
         ],
         //Set default order to column 4 (MSRP) and be ascending in value
         order: [[ 4, 'asc' ]],
-        createdRow: function(row, data, index){
-            //Add underline format to each cell
-            $(row).find('td').hover(function (){
-                $(this).css("text-decoration", "underline");
-            },function(){
-                $(this).css("text-decoration", "none");
-            }
-        );
-            //Add href attribute to each row
-            $(row).attr('data-href', "/requests/"+data._id);
-            //Attach click listener to each row
-            $(row).on("click", function() {
-                //Route to show view for request chosen
-                window.location = jQuery(this).closest('tr').attr('data-href'); 
-            }); 
-        },
         oLanguage: {
             "sEmptyTable":     "You currently have no Requests"
         }      
     });           
-};       
+};    
+
+
+    //Handle the confirm YES btn in the deleteModal
+    $("#confirm-delete-btn").on('click', function(e){
+        e.preventDefault;
+        console.log("line 136")
+            $("#delete-request-form").submit(); 
+        });      
+          
 
 
 //Helper function to create table

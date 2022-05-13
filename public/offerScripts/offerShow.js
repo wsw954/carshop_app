@@ -296,21 +296,21 @@ function getOtherVehiclesInOffers(offers){
     function buyerView(){
         $('li[id=dealerName').hide();
         $("#edit-offer-btn").hide();
+        $("#delete-offer-btn").hide();
         //Display Accept btn if user is Buyer & Request is Active   
         if(offerJSON.offer.request.status === "Active"){
             $('button[id=offer-accept]').show();
                 addLogicAcceptBtn();
             }
-        
-
-    }        
+    };        
 
     //Helper function to customize view for buyer
     function dealerView(){  
+        //Hide offer-accept btn from dealer
         $('button[id=offer-accept]').hide();
         //Because of clash w/inline style hide the edit offer btn manually here 
         $('button[id=edit-offer-btn]').hide();
-        if(offerJSON.offer.status === 'Active'){ 
+        $('button[id=delete-offer-btn]').hide();
             $("#inv-div").show();
             getDealerInfo();
             if(offerJSON.offer.dealer === userID){
@@ -318,9 +318,9 @@ function getOtherVehiclesInOffers(offers){
                     $('li[id=dealerName').text("Dealer: "+dealerName); 
                     //Display the edit offer btn, since this dealer is the owner of Offer being viewed
                     $('button[id=edit-offer-btn]').show();
+                    $('button[id=delete-offer-btn]').show();
                         addLogicEditBtn(); 
-                    } 
-                }
+                    }  
         };      
 
 
@@ -462,6 +462,24 @@ function getOtherVehiclesInOffers(offers){
            })
            return eligibility;
          };
+
+
+    //Handle the DELETE btn offer command
+    $("#delete-offer-btn").on('click', function(e){
+        e.preventDefault;
+        $("#deleteModal").modal('show');
+    });
+   
+    //Handle the confirm YES btn in the deleteModal
+    $("#confirm-delete-btn").on('click', function(e){
+        e.preventDefault;
+            //Pass the number of matching Offers to the server route
+            var filter = {requestID:offerJSON.offer.request._id};
+            $("#delete-offer-json-input").val(JSON.stringify(filter));
+            console.log(filter);
+            $("#delete-offer-form").submit(); 
+        });      
+          
 
 
 

@@ -133,6 +133,8 @@ router.delete("/offers/:id", middleware.checkOfferOwnership, function(req, res){
             });   
 });
 
+
+
 //Retrieve json of a single offer doc from db
 router.get("/offers/json/:id", middleware.isUserLoggedIn, function(req, res){ 
     if(req.xhr){

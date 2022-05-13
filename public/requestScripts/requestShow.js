@@ -141,12 +141,12 @@ function getModelData(){
           $("#cancel_request_btn").show();
       }
           //Add logic to the cancel btn
-          $("#cancel_request").click(function(e){
+          $("#cancel_request_btn").click(function(e){
               if(requestJSON.buyer._id === userID){
                 if(requestJSON.status === "Active"){
                   $("#cancelModal").modal('show');
                 } else{
-                    $("#errorMessage").text("Sorry, you can only EDIT an Active REQUEST");
+                    $("#errorMessage").text("Sorry, you can only CANCEL an Active REQUEST");
                     $("#errorModal").modal('show');
                 }
               } else{
