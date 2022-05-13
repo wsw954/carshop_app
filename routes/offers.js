@@ -116,25 +116,6 @@ router.put("/offers/:id", middleware.checkOfferOwnership, function(req, res, nex
 //Destroy (RESTFul) route deletes Offer
 router.delete("/offers/:id", middleware.checkOfferOwnership, function(req, res){
     var json = JSON.parse(req.body.json);
-    switch (true) {
-        case json.numberOffers === 1:
-         //First, find the request and delete the request to which this offer was made  
-          Request.findByIdAndRemove(json.requestID,function(err, requestFound){
-            if(err){
-                console.log(err);            
-            } else {
-                //Next, delete the offer
-                Offer.findByIdAndRemove(req.params.id, function(err){
-                    if(err){
-                        console.log(err);            
-                    } else {
-                        res.redirect("/offers");
-                    }
-                })
-            }
-        }); 
-          break;
-        case json.numberOffers > 1:
             //First, find the request and remove from offers array, this offer
             Request.findByIdAndUpdate(json.requestID, { $pullAll: {offers: [req.params.id]}}, { new: true },function(err, requestFound){
                 if(err){
@@ -150,8 +131,6 @@ router.delete("/offers/:id", middleware.checkOfferOwnership, function(req, res){
                     })
                 }
             });   
-            break;
-      }
 });
 
 //Retrieve json of a single offer doc from db

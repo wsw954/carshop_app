@@ -604,6 +604,36 @@ function getOtherVehiclesInOffers(offers){
         } 
     };
 
+        //Handle the UNDO EDIT offer command
+        $("#undo-edit-btn").on('click', function(e){
+            e.preventDefault;
+            //Collapse all divs 
+             $('.collapse.show').collapse('hide');
+            //Assign value to the global variable to the original offer vehicle
+            offerVehicleJSON = offerJSON.offer.dealerVehicle;
+            //Restore the Offer Vehicle display to original
+            displayVehicleInfo("offer", offerVehicleJSON);
+            //Display Offer Details
+            displayOfferDetails(offerJSON.offer.request);
+            //Reset the dealer inventory table
+            getDealerInfo();  
+            });
+
+        //Handle the DELETE btn offer command
+        $("#delete-offer-btn").on('click', function(e){
+            e.preventDefault;
+            $("#deleteModal").modal('show');
+        });
+   
+        //Handle the confirm YES btn in the deleteModal
+        $("#confirm-delete-btn").on('click', function(e){
+             e.preventDefault;
+             //Pass the number of matching Offers to the server route
+             var filter = {requestID:offerJSON.offer.request._id, numberOffers:offerJSON.offer.request.offers.length};
+             $("#delete-offer-json-input").val(JSON.stringify(filter));
+             $("#delete-offer-form").submit(); 
+        });      
+
 
 
 

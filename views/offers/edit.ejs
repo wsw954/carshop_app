@@ -127,8 +127,12 @@ data-bs-target="#offer-div" aria-expanded="false" aria-controls="offer-div">Comp
     <!-- Form to hold edit offer json -->
     <form action="/offers/<%= offer %>?_method=PUT" method="POST" id="edit-offer-form" >
       <input type="text" class="hidden" name="json" id="edit-offer-json-input"/>  
-  </form>
+    </form>
 
+    <!-- Form to hold delete vehicle json -->
+    <form action="/offers/<%= offer %>?_method=DELETE" method="POST" id="delete-offer-form" > 
+      <input type="text" class="hidden" name="json" id="delete-offer-json-input"/>             
+    </form>
  
 
       <br>
@@ -182,6 +186,26 @@ data-bs-target="#offer-div" aria-expanded="false" aria-controls="offer-div">Comp
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" id="save-offer-btn">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">WARNING</h5>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p id="deletelMessage">Are you sure you want to DELETE this Offer?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">NO</button>
+            <button type="button" class="btn btn-primary" id="confirm-delete-btn">YES</button>
           </div>
         </div>
       </div>
