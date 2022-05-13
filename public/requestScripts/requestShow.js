@@ -27,7 +27,8 @@ $.getJSON(jsonRequestUrl, function(data){
           displayRequestEdit();
         break;
       case 'Dealer':
-        $("#cancel_request_btn").hide()
+        $("#cancel-request-btn").hide();
+        $("#delete-request-btn").hide();
           displayAdditionalBuyerInfo();
           getDealerInfo();
           break;  
@@ -132,16 +133,16 @@ function getModelData(){
 
 //Helper function to display Request Edit btns
   function displayRequestEdit(){
-      if(requestJSON.buyer._id === userID && requestJSON.status === "Active"){
+      if(requestJSON.buyer._id === userID){
           //Add form action w/requestID to cancel-request-form
           $("#cancel-request-form").attr('action', '/requests/'+ requestJSON._id+"?_method=PUT");
           //Add form action w/requestID to delete-request-form
           $("#delete-request-form").attr('action', '/requests/'+ requestJSON._id+"?_method=DELETE");
           //Display cancel btn
-          $("#cancel_request_btn").show();
+          $("#cancel-request-btn").show();
       }
           //Add logic to the cancel btn
-          $("#cancel_request_btn").click(function(e){
+          $("#cancel-request-btn").click(function(e){
               if(requestJSON.buyer._id === userID){
                 if(requestJSON.status === "Active"){
                   $("#cancelModal").modal('show');
@@ -155,16 +156,25 @@ function getModelData(){
               }
         });
             //Handle the confirm of CANCEL btn in cancelModal
-             $("#confirm-cancel-btn").on('click', function(e){
-                  //If Request has matching Offer, cancel the Request
-                  if(requestJSON.offers.length >= 1){
-                  $("#cancel-request-form").submit();
-                  } 
-                  //If the Request has no matching Offer, delete the Request
-                  if(requestJSON.offers.length === 0){
-                  $("#delete-request-form").submit();
-                  }
-              });    
+            $("#confirm-cancel-btn").on('click', function(e){
+                $("#cancel-request-form").submit();
+              }); 
+
+            //Handle the logic of DELETE btn
+            $("#delete-request-btn").click(function(e){
+              if(requestJSON.offers.length > 0){
+                $("#errorMessage").text("Sorry, you cannot delete a requests which currently has a pending Active Offer");
+                $("#errorModal").modal('show');
+              } else{
+                $("#deleteModal").modal('show');
+              }
+            });  
+            //Handle the confirm YES btn in the deleteModal
+            $("#confirm-delete-btn").on('click', function(e){
+                e.preventDefault;
+                    $("#delete-request-form").submit(); 
+                });    
+              
   };
 
 

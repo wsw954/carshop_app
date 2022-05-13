@@ -78,7 +78,7 @@ router.get("/requests", middleware.isUserLoggedIn, function(req, res){
     if(req.xhr){
        switch (req.user.kind) {
            case 'Buyer':
-               Request.find({buyer:req.user._id,status: {$ne:"Cancelled"}}).
+               Request.find({buyer:req.user._id}).
                populate('vehicle').
                populate('buyer').
                populate('offers').
@@ -297,7 +297,7 @@ router.put("/requests/:id", middleware.checkRequestOwnership, function(req, res)
                 if(err){
                     console.log(err);            
                 } else {
-                    res.render("buyers/dashboard");
+                    res.redirect("/requests");
                 }
             });   
         }    
@@ -311,7 +311,7 @@ router.delete("/requests/:id", middleware.checkRequestOwnership, function(req, r
         if(err){
             console.log(err);            
         } else {
-            res.redirect("/buyers/dashboard");
+            res.redirect("/requests");
         }
     });
 });

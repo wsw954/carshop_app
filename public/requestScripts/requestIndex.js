@@ -106,16 +106,20 @@ $(document).ready(function() {
             "orderable": false,
             fnCreatedCell:function (nTd, sData, oData, iRow, iCol){
                 $(nTd).on("click", function() {
+                    console.log(oData.offers.length)
                         //Verify if the selected Requests has a pending Active Offer 
                         if(oData.offers.length > 0){
+                            console.log("Line 112")
                             $("#errorMessage").text("You cannot delete a requests which is currently has a pending Active Offer")
                             $("#errorModal").modal('show'); 
                         }
                          else {
+                             console.log("line 117")
                             //Add delete form action
                             $("#delete-request-form").attr('action', '/requests/'+ oData._id+"?_method=DELETE");
                             //Display the confirm delete modal
                             $("#deleteModal").modal('show');
+
                                 };
                             });
                         }
@@ -129,11 +133,9 @@ $(document).ready(function() {
     });           
 };    
 
-
     //Handle the confirm YES btn in the deleteModal
     $("#confirm-delete-btn").on('click', function(e){
         e.preventDefault;
-        console.log("line 136")
             $("#delete-request-form").submit(); 
         });      
           
