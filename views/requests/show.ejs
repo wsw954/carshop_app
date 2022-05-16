@@ -73,12 +73,12 @@
   <br> 
   <!-- Form to hold cancel request json -->
   <div id="cancel-div" class="container hidden">
-    <form method="POST" id="cancel-request-form" >               
+    <form action="/requests/<%=request%>?_method=PUT" method="POST" id="cancel-request-form" >               
       </form>
   </div>
   <!-- Form to hold delete request json -->
   <div id="delete-div" class="container hidden">
-    <form method="POST" id="delete-request-form" >               
+    <form action="/requests/<%=request%>?_method=DELETE" method="POST" id="delete-request-form" >               
       </form>
   </div>
 

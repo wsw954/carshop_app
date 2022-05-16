@@ -23,16 +23,7 @@ $.getJSON(jsonRequestUrl, function(data){
    //Check for type of User
    switch (userKind) {
       case 'Buyer':
-        //Check is reqeust status is 'Active'
-        if(requestJSON.status === "Active"){
-            //Display & Add logic to Request Edit btns & forms
-            displayRequestEdit();
-        } else {
-          //If Request not 'Active', hide cancel & delete btns
-          $("#cancel-request-btn").hide();
-          $("#delete-request-btn").hide();
-        }
-
+        displayEditBtn(requestJSON.status, requestJSON.offers.length);
         break;
       case 'Dealer':
         $("#cancel-request-btn").hide();
@@ -139,52 +130,71 @@ function getModelData(){
 
 
 
-//Helper function to display Request Edit btns
-  function displayRequestEdit(){
-      if(requestJSON.buyer._id === userID){
-          //Add form action w/requestID to cancel-request-form
-          $("#cancel-request-form").attr('action', '/requests/'+ requestJSON._id+"?_method=PUT");
-          //Add form action w/requestID to delete-request-form
-          $("#delete-request-form").attr('action', '/requests/'+ requestJSON._id+"?_method=DELETE");
-          //Display cancel btn
+  //Helper function to handle display of 'Edit' & 'Cancel' btns for Buyer
+  function displayEditBtn(status, offers){
+    switch (status) {
+      case 'Active':
+        if(offers === 0){
           $("#cancel-request-btn").show();
-      }
-          //Add logic to the cancel btn
-          $("#cancel-request-btn").click(function(e){
-              if(requestJSON.buyer._id === userID){
-                if(requestJSON.status === "Active"){
-                  $("#cancelModal").modal('show');
-                } else{
-                    $("#errorMessage").text("Sorry, you can only CANCEL an Active REQUEST");
-                    $("#errorModal").modal('show');
+          $("#delete-request-btn").show();
+        } if(offers > 0){
+          $("#delete-request-btn").hide();
+        }
+        break;
+      case 'Cancelled':
+        if(offers === 0){
+          $("#cancel-request-btn").hide();
+          $("#delete-request-btn").show();
+        }
+         if(offers > 0){
+          $("#cancel-request-btn").hide();
+          $("#delete-request-btn").hide();
+         }
+        break;
+      case 'Accepted':
+        $("#cancel-request-btn").hide();
+        $("#delete-request-btn").hide();
+        break;
+      
+    }
+  };
+
+    //Add logic to the cancel btn
+      $("#cancel-request-btn").click(function(e){
+          if(requestJSON.buyer._id === userID){
+              if(requestJSON.status === "Active"){
+                $("#cancelModal").modal('show');
+              } else{
+                  $("#errorMessage").text("Sorry, you can only CANCEL an Active REQUEST");
+                  $("#errorModal").modal('show');
                 }
               } else{
                 $("#errorMessage").text("Sorry, you don't have permission to EDIT this REQUEST. You must be the buyer who created this REQUEST");
                 $("#errorModal").modal('show');
               }
         });
-            //Handle the confirm of CANCEL btn in cancelModal
-            $("#confirm-cancel-btn").on('click', function(e){
-                $("#cancel-request-form").submit();
-              }); 
 
-            //Handle the logic of DELETE btn
-            $("#delete-request-btn").click(function(e){
-              if(requestJSON.offers.length > 0){
-                $("#errorMessage").text("Sorry, you cannot delete a requests which currently has a pending Active Offer");
-                $("#errorModal").modal('show');
-              } else{
-                $("#deleteModal").modal('show');
+    //Handle the confirm of CANCEL btn in cancelModal
+    $("#confirm-cancel-btn").on('click', function(e){
+        $("#cancel-request-form").submit();
+      }); 
+
+    //Handle the logic of DELETE btn
+    $("#delete-request-btn").click(function(e){
+      if(requestJSON.offers.length > 0){
+          $("#errorMessage").text("Sorry, you cannot delete a requests which currently has a pending Active Offer");
+              $("#errorModal").modal('show');
+            } else{
+              $("#deleteModal").modal('show');
               }
-            });  
-            //Handle the confirm YES btn in the deleteModal
-            $("#confirm-delete-btn").on('click', function(e){
-                e.preventDefault;
-                    $("#delete-request-form").submit(); 
-                });    
-              
-  };
-
+      });
+    
+    
+      //Handle the confirm YES btn in the deleteModal
+        $("#confirm-delete-btn").on('click', function(e){
+          e.preventDefault;
+              $("#delete-request-form").submit(); 
+        });    
 
   //Additional Buyer info, specific for Dealers
   function displayAdditionalBuyerInfo(){
