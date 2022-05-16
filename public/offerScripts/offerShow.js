@@ -297,10 +297,12 @@ function getOtherVehiclesInOffers(offers){
         $('li[id=dealerName').hide();
         $("#edit-offer-btn").hide();
         $("#delete-offer-btn").hide();
-        //Display Accept btn if user is Buyer & Request is Active   
+        //Display Accept btn if Request is Active   
         if(offerJSON.offer.request.status === "Active"){
             $('button[id=offer-accept]').show();
                 addLogicAcceptBtn();
+            } else {
+              $('button[id=offer-accept]').hide();
             }
     };        
 
@@ -322,6 +324,60 @@ function getOtherVehiclesInOffers(offers){
                         addLogicEditBtn(); 
                     }  
         };      
+
+   //Helper function to add logic to Accept Offer btn
+   function addLogicAcceptBtn(){
+    $("#offer-accept").click(function(e){
+        switch (offerJSON.offer.request.status) {
+          case 'Accepted':
+            $("#errorMessage").text("Sorry, your REQUEST has already been ACCEPTED");
+            $("#errorModal").modal('show');
+            break;
+          case 'Cancelled':
+            $("#errorMessage").text("Sorry, your REQUEST was previously CANCELLED");
+            $("#errorModal").modal('show');
+            break;
+          case 'Active':
+            switch (offerJSON.offer.request.purchaseType) {
+                case 'Cash':
+                  //Customize modal to review CASH purchase details
+                  $('div[id="acceptModal-body"]').empty();
+                  $('div[id="acceptModal-body"]').append($('<p>', {'text':"Dealer MSRP: $"+offerJSON.offer.dealerVehicle.msrp}));
+                  $('div[id="acceptModal-body"]').append($('<p>', {'text':"Dealer Total Selling Price: $"+offerJSON.offer.totalPayment}));
+                  $('div[id="acceptModal-body"]').append($('<p>', {'text':"Are you sure you want to ACCEPT this Offer?"}));
+                  break;
+                case 'Finance':
+                  //Customize modal to review FINANCE purchase details
+                  $('div[id="acceptModal-body"]').empty();
+                  $('div[id="acceptModal-body"]').append($('<p>', {'text':"Down Payment: $"+offerJSON.offer.request.downPayment}));
+                  $('div[id="acceptModal-body"]').append($('<p>', {'text':"Number of Months:"+offerJSON.offer.request.numberOfMonths}));
+                  $('div[id="acceptModal-body"]').append($('<p>', {'text':"Monthly Payment: $"+offerJSON.offer.monthlyPayment}));
+                  break;
+                case 'Lease':
+                  //Customize modal to review LEASE purchase details
+                  $('div[id="acceptModal-body"]').empty();
+                  $('div[id="acceptModal-body"]').append($('<p>', {'text':"Down Payment: $"+offerJSON.offer.request.downPayment}));
+                  $('div[id="acceptModal-body"]').append($('<p>', {'text':"Lease Term (Months):"+offerJSON.offer.request.leaseTerm}));
+                  $('div[id="acceptModal-body"]').append($('<p>', {'text':"Annual Mileage: "+offerJSON.offer.request.annualMileage}));
+                  $('div[id="acceptModal-body"]').append($('<p>', {'text':"Monthly Payment: $"+offerJSON.offer.monthlyPayment}));
+                  break;
+              }
+            $("#acceptModal").modal('show');
+            //Add form action w/offer ID to edit-offer-form
+            $("#edit-offer-form").attr('action', '/offers/'+ offerJSON.offer._id+"?_method=PUT");   
+            //Handle the confirm of ACCEPT btn in acceptModal
+            $("#confirm-accept-btn").on('click', function(e){
+                var action = {action:"Accept",request:offerJSON.offer.request, offerID:offerJSON.offer._id};
+                $("#edit-offer-input").val(JSON.stringify(action));
+                $("#edit-offer-form").submit();
+            });
+            break;
+        }
+      });
+   };
+
+
+
 
 
    //Helper function to add logic to EDIT btn

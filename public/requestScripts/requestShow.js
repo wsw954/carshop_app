@@ -23,8 +23,16 @@ $.getJSON(jsonRequestUrl, function(data){
    //Check for type of User
    switch (userKind) {
       case 'Buyer':
-        //Display & Add logic to Request Edit btns & forms
-          displayRequestEdit();
+        //Check is reqeust status is 'Active'
+        if(requestJSON.status === "Active"){
+            //Display & Add logic to Request Edit btns & forms
+            displayRequestEdit();
+        } else {
+          //If Request not 'Active', hide cancel & delete btns
+          $("#cancel-request-btn").hide();
+          $("#delete-request-btn").hide();
+        }
+
         break;
       case 'Dealer':
         $("#cancel-request-btn").hide();
