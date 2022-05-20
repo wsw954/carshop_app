@@ -311,15 +311,20 @@ function getOtherVehiclesInOffers(offers){
   function dealerView(){
       //Hide offer-accept btn from dealer
       $('button[id=offer-accept]').hide();
+      //Add logic to 
       //Verify if dealer is NOT owner of Offer
       if(offerJSON.offer.dealer != userID){
         //Hide edit & delete btns
         $("#edit-offer-btn").hide();
         $("#delete-offer-btn").hide();
       } else{
+        //Display dealer's actual name
+        $("#dealerName").text("Dealer: "+dealerName);
+        //Add href to 'Edit' btn
+        $("#edit-offer-btn").attr("href", "/offers/"+offerJSON.offer._id+"/edit/?status="+offerJSON.offer.status);
         //Display edit & delete btns depending on status
         switch (offerJSON.offer.status) {
-          case 'Active':
+          case 'Active': 
               $("#edit-offer-btn").show();
               $("#delete-offer-btn").show();
             break;
@@ -344,7 +349,7 @@ function getOtherVehiclesInOffers(offers){
     $("#offer-accept").click(function(e){
         switch (offerJSON.offer.request.status) {
           case 'Accepted':
-            $("#errorMessage").text("Sorry, your REQUEST has already been ACCEPTED");
+            $("#errorMessage").text("Sorry, this Offer has already been ACCEPTED");
             $("#errorModal").modal('show');
             break;
           case 'Cancelled':
@@ -388,28 +393,6 @@ function getOtherVehiclesInOffers(offers){
             break;
         }
       });
-   };
-
-
-
-
-
-   //Helper function to add logic to EDIT btn
-   function addLogicEditBtn(){
-    $("#edit-offer-btn").click(function(e){
-        if(offerJSON.offer.status === "Active" ){
-          if(offerJSON.offer.dealer === userID){
-              //Route to offer EDIT view
-              window.location = '/offers/'+offerJSON.offer._id+'/edit'; 
-                } else {
-                  $("#errorMessage").text("Sorry, you are not authorized to EDIT this Offer");
-                  $("#errorModal").modal('show');
-                }
-        } else{
-            $("#errorMessage").text("Sorry, you can only EDIT an Active Offer");
-            $("#errorModal").modal('show');
-        }  
-     });
    };
 
 

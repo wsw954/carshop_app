@@ -70,7 +70,12 @@ router.get("/offers/:id", middleware.isUserLoggedIn, function(req, res){
 //EDIT (RESTFul) Show edit form for Offer
 router.get("/offers/:id/edit", middleware.checkOfferOwnership, function(req, res){  
     var offer = req.params.id;
-    res.render("offers/edit", {offer:offer});
+    if(req.query.status === 'Active'){
+        res.render("offers/edit", {offer:offer});
+    }
+    else {
+        res.render("dealers/dashboard");
+    }
 });
 
 //Update (RESTFul)  offers  PUT  route

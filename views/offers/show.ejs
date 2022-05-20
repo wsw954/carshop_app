@@ -116,7 +116,7 @@
 </div> 
 <br>
     <!-- Form to hold edit offer json -->
-    <form method="POST" id="edit-offer-form" >
+    <form action="/offers/<%= offer %>/edit" method="GET" id="edit-offer-form" >
         <input type="text" class="hidden" name="json" id="edit-offer-input"/>  
     </form>
 
@@ -130,7 +130,7 @@
     </div>
     <br>
     <div class="btn-toolbar hidden">
-      <button id="edit-offer-btn" class="btn btn-primary hidden" >Edit Offer</button>
+      <a id="edit-offer-btn" class="btn btn-primary hidden" >Edit Offer</a>
       <button id="delete-offer-btn" class="btn btn-danger hidden" >DELETE OFFER</button>
     </div>
         <br>

@@ -139,7 +139,6 @@ middlewareObj.checkOfferOwnership = function(req, res, next){
                                  {path:'vehicle',
                                   model:'Vehicle'}] }).exec(function (err, foundOffer){
                     if(err){
-                    // console.log(err);
                     res.redirect("back");
                     } else {
                         switch (req.user.kind) {
