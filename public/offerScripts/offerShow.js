@@ -42,12 +42,12 @@ var otherVehiclesInOffers = [];
                     //Create table for Other Offers (Competing Offers)
                     createCompeteOfferTable(competeOffers.offerJSON);
                     //Check for type of User
-                    switch (userKind) {
+                    switch (userKind){
                         case 'Buyer':
                         buyerView();
                         break;
                         case 'Dealer':
-                        dealerView();
+                          dealerView();
                         break;  
                     };
                 })
@@ -274,7 +274,7 @@ function getOtherVehiclesInOffers(offers){
                             //Get the dealer vehicle ID 
                             var offerID = table.rows( { selected: true } ).data()[0]._id;
                             //Render the Offers show view
-                            window.location.href = '/offers/'+offerID
+                            window.location.href = '/offers/'+offerID;
                           }
                         }
                     }
@@ -306,24 +306,38 @@ function getOtherVehiclesInOffers(offers){
             }
     };        
 
-    //Helper function to customize view for buyer
-    function dealerView(){  
-        //Hide offer-accept btn from dealer
-        $('button[id=offer-accept]').hide();
-        //Because of clash w/inline style hide the edit offer btn manually here 
-        $('button[id=edit-offer-btn]').hide();
-        $('button[id=delete-offer-btn]').hide();
-            $("#inv-div").show();
-            getDealerInfo();
-            if(offerJSON.offer.dealer === userID){
-                    //Add this dealerName to dealer li
-                    $('li[id=dealerName').text("Dealer: "+dealerName); 
-                    //Display the edit offer btn, since this dealer is the owner of Offer being viewed
-                    $('button[id=edit-offer-btn]').show();
-                    $('button[id=delete-offer-btn]').show();
-                        addLogicEditBtn(); 
-                    }  
-        };      
+
+  //Helper function to customize view for dealer
+  function dealerView(){
+      //Hide offer-accept btn from dealer
+      $('button[id=offer-accept]').hide();
+      //Verify if dealer is NOT owner of Offer
+      if(offerJSON.offer.dealer != userID){
+        //Hide edit & delete btns
+        $("#edit-offer-btn").hide();
+        $("#delete-offer-btn").hide();
+      } else{
+        //Display edit & delete btns depending on status
+        switch (offerJSON.offer.status) {
+          case 'Active':
+              $("#edit-offer-btn").show();
+              $("#delete-offer-btn").show();
+            break;
+          case 'Accepted':
+            $("#edit-offer-btn").hide();
+            $("#delete-offer-btn").hide();
+            break;
+          case 'Closed':
+            $("#edit-offer-btn").hide();
+            $("#delete-offer-btn").hide()
+            break;
+          case 'Request Cancelled':
+            $("#edit-offer-btn").hide();
+            $("#delete-offer-btn").show();
+            break;
+        }
+      }
+  };      
 
    //Helper function to add logic to Accept Offer btn
    function addLogicAcceptBtn(){
