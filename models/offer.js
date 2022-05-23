@@ -20,7 +20,7 @@ var offerSchema = new mongoose.Schema({
     status:{
         type: String,
         required: true,
-        enum: ["Active","Accepted", "Closed", "Request Cancelled"]
+        enum: ["Active","Offer Accepted", "Closed", "Request Cancelled"]
       }
 });
 

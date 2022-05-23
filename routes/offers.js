@@ -94,7 +94,7 @@ router.put("/offers/:id", middleware.checkOfferOwnership, function(req, res, nex
                         console.log(err);            
                     } else {
                         //Change status of Request
-                        Request.findByIdAndUpdate({_id:offerFound.request}, {status:"Accepted"}, function(err, requestFound){
+                        Request.findByIdAndUpdate({_id:offerFound.request}, {status:"Offer Accepted"}, function(err, requestFound){
                             if(err){
                                 console.log(err);            
                             } else {

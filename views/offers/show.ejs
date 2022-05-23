@@ -116,7 +116,7 @@
 </div> 
 <br>
     <!-- Form to hold edit offer json -->
-    <form action="/offers/<%= offer %>/edit" method="GET" id="edit-offer-form" >
+    <form action="/offers/<%= offer %>?_method=PUT" method="POST" id="edit-offer-form" >
         <input type="text" class="hidden" name="json" id="edit-offer-input"/>  
     </form>
 
@@ -170,7 +170,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Confirm</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -178,7 +178,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-primary" id="confirm-accept-btn">YES</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">NO</button>
             </div>
           </div>
         </div>

@@ -1,5 +1,3 @@
-
-
 $(document).ready(function() {
   //Set global variables
   var requestJSON = {};
@@ -151,7 +149,7 @@ function getModelData(){
           $("#delete-request-btn").hide();
          }
         break;
-      case 'Accepted':
+      case 'Offer Accepted':
         $("#cancel-request-btn").hide();
         $("#delete-request-btn").hide();
         break;

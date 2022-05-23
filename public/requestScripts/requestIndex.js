@@ -86,44 +86,7 @@ $(document).ready(function() {
         {"data": "vehicle.msrp", title: "MSRP"},
         {"data": "purchaseType", title: "Purchase Type"},
         {"data": "status", title: "Status"},
-        {"data":"offers.length",title:"Offers"},
-        {
-            "data": null,
-            "className": "dt-center editor-edit",
-            "defaultContent": '<i class="fas fa-pencil-alt"/>',
-            "orderable": false,
-            fnCreatedCell:function (nTd, sData, oData, iRow, iCol){
-                $(nTd).on("click", function() {
-                        //Route to show view for vehicle chosen
-                        window.location = "/requests/"+oData._id; 
-                        });
-                        }
-        },
-        {
-            "data": null,
-            "className": "dt-center editor-delete",
-            "defaultContent": '<i class="fa fa-trash"/>',
-            "orderable": false,
-            fnCreatedCell:function (nTd, sData, oData, iRow, iCol){
-                $(nTd).on("click", function() {
-                    console.log(oData.offers.length)
-                        //Verify if the selected Requests has a pending Active Offer 
-                        if(oData.offers.length > 0){
-                            console.log("Line 112")
-                            $("#errorMessage").text("You cannot delete a requests which is currently has a pending Active Offer")
-                            $("#errorModal").modal('show'); 
-                        }
-                         else {
-                             console.log("line 117")
-                            //Add delete form action
-                            $("#delete-request-form").attr('action', '/requests/'+ oData._id+"?_method=DELETE");
-                            //Display the confirm delete modal
-                            $("#deleteModal").modal('show');
-
-                                };
-                            });
-                        }
-                    }
+        {"data":"offers.length",title:"Offers"}
         ],
         //Set default order to column 4 (MSRP) and be ascending in value
         order: [[ 4, 'asc' ]],
