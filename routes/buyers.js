@@ -128,7 +128,7 @@ router.post("/buyers/new", urlencodedParser,  [
 router.post("/buyers/login", function (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
                 if (err) { return next(err); }
-                if (!user) { return res.send({ success : false, message : 'authentication failed' });}
+                if (!user) { return res.send({ success : false, message : 'authentication has failed' });}
                 req.logIn(user, function (err) {
                     if (err) { return next(err) }
                     if(user.kind === "Buyer"){
