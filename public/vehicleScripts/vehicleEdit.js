@@ -145,7 +145,7 @@ $(document).ready(function() {
 
     //Helper function to load make dropdown w/ list of makes available
     function loadMakes(){
-        var jsonUrlMakes= "/src/assets/make";
+        var jsonUrlMakes= "/vehicles/makes/json";
         $.getJSON(jsonUrlMakes, function(data){
             $(makeDropdown).append('<option selected="true" disabled>--Select A Make--</option>');
             //Load the makes available into make dropdown
@@ -160,7 +160,7 @@ $(document).ready(function() {
     //Helper function to load modelsDropdown as per make selected
     function loadModels(make){
         //Get url for list of models, per make chosen
-        var jsonUrl = "/vehicles/models/"+make;
+        var jsonUrl = "/vehicles/models/json/"+make;
         //Reset the model dropdown
         $("#model_fg").show();
         $(modelDropdown).empty();
@@ -182,7 +182,7 @@ $(document).ready(function() {
 
     //Helper function to get src data file for model chosen
     function getModelData(make, model, year){
-        var jsonUrl = "/vehicles/src/json/"+make+"/"+model+"/"+year;
+        var jsonUrl = "/vehicles/data/json/"+make+"/"+model+"/"+year;
         //Get the model data json
             $.ajax({
                     url: jsonUrl,

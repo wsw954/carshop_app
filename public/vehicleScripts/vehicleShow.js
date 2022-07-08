@@ -14,7 +14,7 @@ $(document).ready(function() {
     $.getJSON(jsonUrlVehicle, vehicleData => {
         vehicleJSON = vehicleData.vehicle;
         //Create url to retrieve model data from db
-        var jsonUrlModelData = "/vehicles/src/json/"+vehicleJSON.make+"/"+vehicleJSON.model+"/"+vehicleJSON.year;
+        var jsonUrlModelData = "/vehicles/data/json/"+vehicleJSON.make+"/"+vehicleJSON.model+"/"+vehicleJSON.year;
     //Get the relevant data file from src for vehicle make & model    
     $.getJSON(jsonUrlModelData, modelData => {
         modelJSON = modelData;
